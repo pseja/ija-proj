@@ -4,7 +4,7 @@ import java.util.EnumSet;
 
 public class Wire extends Tile {
 
-    private WireShape shape;
+    private final WireShape shape;
 
     public Wire(int row, int col, WireShape shape) {
         super(row, col, EnumSet.noneOf(Direction.class));
@@ -37,8 +37,8 @@ public class Wire extends Tile {
     }
 
     @Override
-    public void setConnected(boolean connected) {
-        this.connected = connected;
+    public void setPowered(boolean powered) {
+        this.powered = powered;
     }
 
     public WireShape getShape() {

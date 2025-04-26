@@ -9,8 +9,8 @@ public class LightBulb extends Tile {
     }
 
     @Override
-    public boolean isConnected() {
-        return connected;
+    public boolean isPowered() {
+        return powered;
     }
 
     public Direction getDirection() {

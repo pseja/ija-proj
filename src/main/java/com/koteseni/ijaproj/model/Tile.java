@@ -9,13 +9,13 @@ public abstract class Tile {
 
     protected EnumSet<Direction> connections;
 
-    protected boolean connected;
+    protected boolean powered;
 
     public Tile(int row, int col, EnumSet<Direction> connections) {
         this.row = row;
         this.col = col;
         this.connections = connections;
-        this.connected = false;
+        this.powered = false;
     }
 
     public void turn() {
@@ -52,8 +52,8 @@ public abstract class Tile {
         return connections;
     }
 
-    public boolean isConnected() {
-        return connected;
+    public boolean isPowered() {
+        return powered;
     }
 
     public void setRow(int row) {
@@ -68,7 +68,7 @@ public abstract class Tile {
         this.connections = connections;
     }
 
-    public void setConnected(boolean connected) {
-        this.connected = connected;
+    public void setPowered(boolean powered) {
+        this.powered = powered;
     }
 }

@@ -6,13 +6,13 @@ public class Source extends Tile {
 
     public Source(int row, int col, EnumSet<Direction> connections) {
         super(row, col, connections);
-        this.connected = true;
+        this.powered = true;
     }
 
     @Override
-    public void setConnected(boolean connected) {
+    public void setPowered(boolean powered) {
         // always set this to true just in case I try to set it to false somewhere on
         // accident
-        this.connected = true;
+        this.powered = true;
     }
 }
