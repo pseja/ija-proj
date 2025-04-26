@@ -5,7 +5,6 @@ import java.util.List;
 
 import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 
 public class GameController {
 
@@ -19,10 +18,6 @@ public class GameController {
 
     @FXML
     private GridPane board_grid;
-
-    // maybe hide this later to not put pressure on the player
-    @FXML
-    private Pane stats_pane;
 
     public void initialize() {
         logs = new ArrayList<>();
