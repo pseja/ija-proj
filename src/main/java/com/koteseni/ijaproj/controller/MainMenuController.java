@@ -40,7 +40,7 @@ public class MainMenuController {
 
             ((Stage) exit_button.getScene().getWindow()).close();
         } catch (IOException e) {
-            showErrorBox("Error returning to main menu: " + e.getMessage());
+            showErrorBox("Error closing the main menu: " + e.getMessage());
         }
     }
 

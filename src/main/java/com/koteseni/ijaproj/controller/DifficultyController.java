@@ -2,6 +2,8 @@ package com.koteseni.ijaproj.controller;
 
 import java.io.IOException;
 
+import com.koteseni.ijaproj.Main;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -51,7 +53,7 @@ public class DifficultyController {
     @FXML
     private void handleBackButton(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/koteseni/ijaproj/view/main-menu.fxml"));
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/com/koteseni/ijaproj/view/main-menu.fxml"));
             Parent root = loader.load();
 
             Stage stage = new Stage();
@@ -66,16 +68,32 @@ public class DifficultyController {
     }
 
     private void startGame(int difficulty) {
-        showInfoBox("Starting game with difficulty level: " + difficulty);
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/koteseni/ijaproj/view/game-view.fxml"));
+            Parent root = loader.load();
+
+            GameController controller = loader.getController();
+            controller.startNewGame(difficulty);
+
+            Stage stage = new Stage();
+            stage.setTitle("Koteseni");
+            stage.setScene(new Scene(root));
+            stage.show();
+
+            ((Stage) back_button.getScene().getWindow()).close();
+        } catch (IOException e) {
+            showErrorBox("Error starting the game: " + e.getMessage());
+        }
     }
 
-    private void showInfoBox(String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Info");
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
+    // not needed for now, but saving it for later just in case
+    // private void showInfoBox(String message) {
+    // Alert alert = new Alert(Alert.AlertType.INFORMATION);
+    // alert.setTitle("Info");
+    // alert.setHeaderText(null);
+    // alert.setContentText(message);
+    // alert.showAndWait();
+    // }
 
     private void showErrorBox(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
