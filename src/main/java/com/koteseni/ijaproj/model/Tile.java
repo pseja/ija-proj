@@ -3,6 +3,7 @@ package com.koteseni.ijaproj.model;
 import java.util.EnumSet;
 
 public abstract class Tile {
+
     protected int row;
     protected int col;
 

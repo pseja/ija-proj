@@ -1,5 +1,19 @@
 package com.koteseni.ijaproj.model;
 
-public class LightBulb {
+import java.util.EnumSet;
 
+public class LightBulb extends Tile {
+
+    public LightBulb(int row, int col, Direction direction) {
+        super(row, col, EnumSet.of(direction));
+    }
+
+    @Override
+    public boolean isConnected() {
+        return connected;
+    }
+
+    public Direction getDirection() {
+        return connections.iterator().next();
+    }
 }
