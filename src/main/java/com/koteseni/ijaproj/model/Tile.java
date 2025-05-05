@@ -9,6 +9,8 @@ public abstract class Tile {
 
     protected EnumSet<Direction> connections;
 
+    protected int rotation_count;
+
     protected boolean powered;
 
     public Tile(int row, int col, EnumSet<Direction> connections) {
@@ -16,6 +18,7 @@ public abstract class Tile {
         this.col = col;
         this.connections = connections;
         this.powered = false;
+        this.rotation_count = 0;
     }
 
     public void turn() {
@@ -26,6 +29,7 @@ public abstract class Tile {
         }
 
         connections = new_connections;
+        rotation_count = (rotation_count + 1) % 4;
     }
 
     public boolean hasConnection(Direction direction) {
@@ -70,5 +74,13 @@ public abstract class Tile {
 
     public void setPowered(boolean powered) {
         this.powered = powered;
+    }
+
+    public int getRotationCount() {
+        return rotation_count;
+    }
+
+    public void setRotationCount(int rotation_count) {
+        this.rotation_count = rotation_count % 4;
     }
 }

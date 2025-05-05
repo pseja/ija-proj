@@ -129,6 +129,9 @@ public class BoardView {
 
                     yield 0;
                 }
+                case X -> {
+                    yield tile.getRotationCount() * 90;
+                }
             };
             case Source source -> switch (source.getShape()) {
                 case I -> connections.contains(Direction.NORTH) ? 0 : 90;
@@ -164,6 +167,7 @@ public class BoardView {
 
                     yield 0;
                 }
+                case X -> tile.getRotationCount() * 90;
             };
             case LightBulb bulb -> switch (bulb.getDirection()) {
                 case NORTH -> 0;
