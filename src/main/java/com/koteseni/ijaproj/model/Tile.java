@@ -32,6 +32,12 @@ public abstract class Tile {
         rotation_count = (rotation_count + 1) % 4;
     }
 
+    public void turn(int count) {
+        for (int i = 0; i < count; i++) {
+            turn();
+        }
+    }
+
     public boolean hasConnection(Direction direction) {
         return connections.contains(direction);
     }
