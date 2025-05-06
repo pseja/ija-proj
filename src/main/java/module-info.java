@@ -6,6 +6,8 @@ module com.koteseni.ijaproj {
     requires org.controlsfx.controls;
     requires eu.hansolo.tilesfx;
 
+    requires gson;
+
     opens com.koteseni.ijaproj to javafx.fxml;
     opens com.koteseni.ijaproj.controller to javafx.fxml;
     opens com.koteseni.ijaproj.model to javafx.fxml;
