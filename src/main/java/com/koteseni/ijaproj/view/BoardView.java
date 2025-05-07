@@ -41,11 +41,11 @@ public class BoardView {
         int rows = board.getRows();
         int cols = board.getCols();
 
-        for (int r = 0; r < rows; r++) {
-            for (int c = 0; c < cols; c++) {
-                Tile tile = board.getTile(r, c);
-                StackPane tile_pane = createTilePane(tile, r, c);
-                grid_pane.add(tile_pane, c, r);
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                Tile tile = board.getTile(row, col);
+                StackPane tile_pane = createTilePane(tile, row, col);
+                grid_pane.add(tile_pane, col, row);
             }
         }
     }
@@ -81,11 +81,12 @@ public class BoardView {
                 stack_pane.getChildren().add(tile_view);
             }
 
-            final int final_row = row;
-            final int final_col = col;
-            stack_pane.setOnMouseClicked(event -> {
-                game_controller.handleTileClick(final_row, final_col);
-            });
+            // handling clicks only when the game is not in replay mode
+            if (game_controller != null) {
+                stack_pane.setOnMouseClicked(event -> {
+                    game_controller.handleTileClick(row, col);
+                });
+            }
         }
 
         return stack_pane;

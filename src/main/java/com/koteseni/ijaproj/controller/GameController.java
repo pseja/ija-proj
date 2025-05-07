@@ -1,5 +1,6 @@
 package com.koteseni.ijaproj.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
@@ -11,6 +12,7 @@ import java.util.Random;
 import com.koteseni.ijaproj.model.Board;
 import com.koteseni.ijaproj.model.Cell;
 import com.koteseni.ijaproj.model.Direction;
+import com.koteseni.ijaproj.model.GameLogger;
 import com.koteseni.ijaproj.model.LightBulb;
 import com.koteseni.ijaproj.model.Source;
 import com.koteseni.ijaproj.model.Tile;
@@ -19,6 +21,11 @@ import com.koteseni.ijaproj.model.WireShape;
 import com.koteseni.ijaproj.view.BoardView;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
@@ -27,8 +34,9 @@ public class GameController {
     private Board board;
     private BoardView board_view;
 
-    // for tracking stats since the game started
-    private List<String> logs;
+    private GameLogger game_logger;
+    private String last_saved_game_path;
+
     private long start_time;
     private long move_count;
 
@@ -37,13 +45,7 @@ public class GameController {
     @FXML
     private GridPane board_grid;
 
-    public void initialize() {
-        logs = new ArrayList<>();
-        move_count = 0;
-    }
-
     public void startNewGame(int difficulty) {
-        logs.clear();
         start_time = System.currentTimeMillis();
         move_count = 0;
 
@@ -55,6 +57,9 @@ public class GameController {
         board_view = new BoardView(board_grid, board, this);
 
         generateBoard();
+
+        game_logger = new GameLogger(board, difficulty);
+        last_saved_game_path = null;
 
         updateBoardView();
     }
@@ -235,8 +240,6 @@ public class GameController {
         int rows = board.getRows();
         int cols = board.getCols();
 
-        // TODO: save the original state of the board here
-
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
                 int rotations = random.nextInt(4);
@@ -292,13 +295,72 @@ public class GameController {
         board.turnTile(row, col);
         move_count++;
 
+        // log moves in play mode
+        if (game_logger != null) {
+            game_logger.logMove(row, col);
+        }
+
         updateBoardView();
 
         if (board.areAllLightBulbsPowered()) {
-            System.out.println("Game Won!");
-            System.out.println("Moves: " + move_count);
-            System.out.println("Time: " + (System.currentTimeMillis() - start_time) / 1000.0 + " seconds");
-            ((Stage) board_grid.getScene().getWindow()).close();
+            handleWin();
         }
+    }
+
+    private void handleWin() {
+        System.out.println("Moves: " + move_count);
+        System.out.println("Time: " + (System.currentTimeMillis() - start_time) / 1000.0 + " seconds");
+
+        // auto save in play mode
+        if (game_logger != null) {
+            try {
+                last_saved_game_path = game_logger.saveGame();
+                showInfoBox("Game Won!\nGame saved to: " + last_saved_game_path);
+            } catch (IOException e) {
+                showErrorBox("Failed to save completed game: " + e.getMessage());
+            }
+        }
+
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/com/koteseni/ijaproj/view/main-menu.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = new Stage();
+            stage.setTitle("Koteseni - Main Menu");
+            stage.setScene(new Scene(root));
+            stage.show();
+
+            ((Stage) board_grid.getScene().getWindow()).close();
+        } catch (IOException e) {
+            showErrorBox("Error returning to main menu: " + e.getMessage());
+        }
+    }
+
+    public void takeOver(Board existingBoard, int difficulty) {
+        this.board = existingBoard;
+        start_time = System.currentTimeMillis();
+        move_count = 0;
+
+        board_view = new BoardView(board_grid, board, this);
+        game_logger = new GameLogger(board, difficulty);
+
+        updateBoardView();
+    }
+
+    private void showInfoBox(String message) {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Info");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    private void showErrorBox(String message) {
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

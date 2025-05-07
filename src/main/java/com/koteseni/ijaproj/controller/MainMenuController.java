@@ -45,8 +45,21 @@ public class MainMenuController {
     }
 
     @FXML
-    private void handleLoadGameButton(ActionEvent event) {
-        showInfoBox("Load game not implemented yet.");
+    private void handleReplayGameButton(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/com/koteseni/ijaproj/view/replay-view.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = new Stage();
+            stage.setTitle("Koteseni - Replay Game");
+            stage.setScene(new Scene(root));
+            stage.show();
+
+            ((Stage) exit_button.getScene().getWindow()).close();
+        } catch (IOException e) {
+            showErrorBox("Error loading replay view: " + e.getMessage());
+        }
     }
 
     @FXML

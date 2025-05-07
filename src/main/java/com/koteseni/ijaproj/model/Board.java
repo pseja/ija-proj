@@ -1,6 +1,7 @@
 package com.koteseni.ijaproj.model;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -174,5 +175,47 @@ public class Board {
 
     public void setLightBulbs(List<LightBulb> light_bulbs) {
         this.light_bulbs = light_bulbs;
+    }
+
+    public Board deepCopy() {
+        Board board_copy = new Board(rows, cols);
+
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                Tile tile = tiles[row][col];
+                if (tile == null) {
+                    continue;
+                }
+
+                Tile tile_copy = null;
+
+                switch (tile) {
+                    case Source local_source -> {
+                        tile_copy = new Source(row, col, local_source.getShape());
+                        board_copy.source = (Source) tile_copy;
+                    }
+                    case LightBulb bulb -> {
+                        tile_copy = new LightBulb(row, col, bulb.getDirection());
+                        board_copy.light_bulbs.add((LightBulb) tile_copy);
+                    }
+                    case Wire wire -> {
+                        tile_copy = new Wire(row, col, wire.getShape());
+                    }
+                    default -> {
+                    }
+                }
+
+                if (tile_copy == null) {
+                    continue;
+                }
+
+                tile_copy.setConnections(EnumSet.copyOf(tile.getConnections()));
+                tile_copy.setRotationCount(tile.getRotationCount());
+                tile_copy.setPowered(tile.isPowered());
+                board_copy.tiles[row][col] = tile_copy;
+            }
+        }
+
+        return board_copy;
     }
 }

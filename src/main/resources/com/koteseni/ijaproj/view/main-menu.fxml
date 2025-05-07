@@ -38,9 +38,9 @@
                         <Cursor fx:constant="HAND" />
                     </cursor>
                 </Button>
-                <Button fx:id="load_game_button" mnemonicParsing="false"
-                    onAction="#handleLoadGameButton"
-                    prefHeight="40.0" prefWidth="200.0" text="Load Game">
+                <Button fx:id="replay_game_button" mnemonicParsing="false"
+                    onAction="#handleReplayGameButton"
+                    prefHeight="40.0" prefWidth="200.0" text="Replay Game">
                     <font>
                         <Font size="18.0" />
                     </font>

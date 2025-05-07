@@ -7,9 +7,6 @@ import java.util.List;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
-/**
- * Represents a complete game state for loading and playback.
- */
 public class GameState {
     private final int rows;
     private final int cols;
