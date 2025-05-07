@@ -20,14 +20,18 @@ import com.koteseni.ijaproj.model.Wire;
 import com.koteseni.ijaproj.model.WireShape;
 import com.koteseni.ijaproj.view.BoardView;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class GameController {
 
@@ -37,17 +41,29 @@ public class GameController {
     private GameLogger game_logger;
     private String last_saved_game_path;
 
-    private long start_time;
     private long move_count;
+
+    private boolean hints_enabled = false;
+
+    private Timeline timer;
+    private int elapsed_seconds;
 
     private final Random random = new Random();
 
     @FXML
     private GridPane board_grid;
 
+    @FXML
+    private Label move_counter_label;
+
+    @FXML
+    private Label timer_label;
+
     public void startNewGame(int difficulty) {
-        start_time = System.currentTimeMillis();
         move_count = 0;
+
+        initializeTimer();
+        updateMoveCounterLabel();
 
         // the same algorithm for board size that the LightBulb game uses, pretty cool
         int rows = 5 + (difficulty - 1) * 2;
@@ -242,11 +258,14 @@ public class GameController {
 
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
-                int rotations = random.nextInt(4);
-
-                for (int i = 0; i < rotations; i++) {
-                    board.getTile(row, col).turn();
+                Tile tile = board.getTile(row, col);
+                if (tile == null) {
+                    continue;
                 }
+
+                tile.setCorrectRotation(tile.getRotationCount());
+
+                randomizeTileRotation(tile);
             }
         }
 
@@ -262,6 +281,17 @@ public class GameController {
                 tile.turn();
                 board.propagatePower();
             }
+        }
+    }
+
+    private void randomizeTileRotation(Tile tile) {
+        if (tile == null) {
+            return;
+        }
+
+        int rotations = random.nextInt(4);
+        for (int i = 0; i < rotations; i++) {
+            tile.turn();
         }
     }
 
@@ -292,8 +322,15 @@ public class GameController {
             return;
         }
 
+        Tile tile = board.getTile(row, col);
+        if (tile == null) {
+            return;
+        }
+
         board.turnTile(row, col);
         move_count++;
+        updateMoveCounterLabel();
+        tile.setPlayerRotationCount(tile.getPlayerRotationCount() + 1);
 
         // log moves in play mode
         if (game_logger != null) {
@@ -308,14 +345,16 @@ public class GameController {
     }
 
     private void handleWin() {
-        System.out.println("Moves: " + move_count);
-        System.out.println("Time: " + (System.currentTimeMillis() - start_time) / 1000.0 + " seconds");
+        if (timer != null) {
+            timer.stop();
+        }
 
         // auto save in play mode
         if (game_logger != null) {
             try {
                 last_saved_game_path = game_logger.saveGame();
-                showInfoBox("Game Won!\nGame saved to: " + last_saved_game_path);
+                showInfoBox("Game Won!", "Moves: " + move_count + "\nTime: " + elapsed_seconds + "s\nSaved to: "
+                        + last_saved_game_path);
             } catch (IOException e) {
                 showErrorBox("Failed to save completed game: " + e.getMessage());
             }
@@ -339,8 +378,10 @@ public class GameController {
 
     public void takeOver(Board existingBoard, int difficulty) {
         this.board = existingBoard;
-        start_time = System.currentTimeMillis();
         move_count = 0;
+
+        initializeTimer();
+        updateMoveCounterLabel();
 
         board_view = new BoardView(board_grid, board, this);
         game_logger = new GameLogger(board, difficulty);
@@ -348,10 +389,115 @@ public class GameController {
         updateBoardView();
     }
 
+    @FXML
+    public void handleHintsButton() {
+        hints_enabled = !hints_enabled;
+        updateBoardView();
+    }
+
+    public boolean areHintsEnabled() {
+        return hints_enabled;
+    }
+
+    @FXML
+    public void handleSaveButton() {
+        try {
+            last_saved_game_path = game_logger.saveGame();
+            showInfoBox("Saved to: " + last_saved_game_path);
+        } catch (IOException e) {
+            showErrorBox("Failed to save game: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    public void handleBackButton() {
+        if (timer != null) {
+            timer.stop();
+        }
+
+        // show alert if the user wants to save the game before returning to the
+        // main menu
+        Alert confirm_alert = new Alert(AlertType.CONFIRMATION);
+        confirm_alert.setTitle("Want to save?");
+        confirm_alert.setContentText("Would you like to save the game before returning to the main menu?");
+
+        javafx.scene.control.ButtonType save_button = new javafx.scene.control.ButtonType("Yes");
+        javafx.scene.control.ButtonType dont_save_button = new javafx.scene.control.ButtonType("No");
+        javafx.scene.control.ButtonType cancel_button = new javafx.scene.control.ButtonType("Cancel",
+                javafx.scene.control.ButtonBar.ButtonData.CANCEL_CLOSE);
+
+        confirm_alert.getButtonTypes().setAll(save_button, dont_save_button, cancel_button);
+
+        java.util.Optional<javafx.scene.control.ButtonType> result = confirm_alert.showAndWait();
+
+        if (result.isPresent()) {
+            if (result.get() == save_button) {
+                try {
+                    last_saved_game_path = game_logger.saveGame();
+                    showInfoBox("Saved to: " + last_saved_game_path);
+                    returnToMainMenu();
+                } catch (IOException e) {
+                    showErrorBox("Failed to save game: " + e.getMessage());
+                }
+            } else if (result.get() == dont_save_button) {
+                returnToMainMenu();
+            } else {
+                timer.play();
+            }
+        }
+    }
+
+    private void returnToMainMenu() {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/com/koteseni/ijaproj/view/main-menu.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = new Stage();
+            stage.setTitle("Koteseni - Main Menu");
+            stage.setScene(new Scene(root));
+            stage.show();
+
+            ((Stage) board_grid.getScene().getWindow()).close();
+        } catch (IOException e) {
+            showErrorBox("Error returning to main menu: " + e.getMessage());
+        }
+    }
+
+    private void initializeTimer() {
+        elapsed_seconds = 0;
+        if (timer != null) {
+            timer.stop();
+        }
+
+        timer = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+            elapsed_seconds++;
+            updateTimerLabel();
+        }));
+        timer.setCycleCount(Timeline.INDEFINITE);
+        timer.play();
+    }
+
+    private void updateMoveCounterLabel() {
+        move_counter_label.setText("Moves\n" + move_count);
+    }
+
+    private void updateTimerLabel() {
+        timer_label.setText("Time\n" + elapsed_seconds + "s");
+    }
+
     private void showInfoBox(String message) {
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Info");
         alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    private void showInfoBox(String header_message, String message) {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Info");
+        alert.setHeaderText(header_message);
         alert.setContentText(message);
         alert.showAndWait();
     }

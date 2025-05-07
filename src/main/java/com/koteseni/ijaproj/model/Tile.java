@@ -6,12 +6,11 @@ public abstract class Tile {
 
     protected int row;
     protected int col;
-
     protected EnumSet<Direction> connections;
-
-    protected int rotation_count;
-
     protected boolean powered;
+    protected int rotation_count;
+    protected int player_rotation_count;
+    protected int correct_rotation;
 
     public Tile(int row, int col, EnumSet<Direction> connections) {
         this.row = row;
@@ -19,35 +18,34 @@ public abstract class Tile {
         this.connections = connections;
         this.powered = false;
         this.rotation_count = 0;
+        this.player_rotation_count = 0;
+        this.correct_rotation = 0;
     }
 
     public void turn() {
-        EnumSet<Direction> new_connections = EnumSet.noneOf(Direction.class);
-
-        for (Direction direction : connections) {
-            new_connections.add(direction.getNext());
-        }
-
-        connections = new_connections;
-        rotation_count = (rotation_count + 1) % 4;
+        turn(1);
     }
 
     public void turn(int count) {
         for (int i = 0; i < count; i++) {
-            turn();
+            EnumSet<Direction> newConnections = EnumSet.noneOf(Direction.class);
+            for (Direction direction : connections) {
+                newConnections.add(direction.getNext());
+            }
+            connections = newConnections;
+
+            rotation_count = (rotation_count + 1) % 4;
         }
     }
 
-    public boolean hasConnection(Direction direction) {
-        return connections.contains(direction);
-    }
+    public int getRotationsToCorrect() {
+        int diff = (correct_rotation - rotation_count) % 4;
 
-    public boolean canConnect(Tile other, Direction direction) {
-        if (other == null) {
-            return false;
+        if (diff < 0) {
+            diff += 4;
         }
 
-        return hasConnection(direction) && other.hasConnection(direction.getOpposite());
+        return diff;
     }
 
     public int getRow() {
@@ -58,35 +56,39 @@ public abstract class Tile {
         return col;
     }
 
-    public EnumSet<Direction> getConnections() {
-        return connections;
-    }
-
     public boolean isPowered() {
         return powered;
-    }
-
-    public void setRow(int row) {
-        this.row = row;
-    }
-
-    public void setCol(int col) {
-        this.col = col;
-    }
-
-    public void setConnections(EnumSet<Direction> connections) {
-        this.connections = connections;
     }
 
     public void setPowered(boolean powered) {
         this.powered = powered;
     }
 
+    public EnumSet<Direction> getConnections() {
+        return connections;
+    }
+
+    public void setConnections(EnumSet<Direction> connections) {
+        this.connections = connections;
+    }
+
     public int getRotationCount() {
         return rotation_count;
     }
 
+    public int getPlayerRotationCount() {
+        return player_rotation_count;
+    }
+
+    public void setPlayerRotationCount(int player_rotation_count) {
+        this.player_rotation_count = player_rotation_count;
+    }
+
     public void setRotationCount(int rotation_count) {
-        this.rotation_count = rotation_count % 4;
+        this.rotation_count = rotation_count;
+    }
+
+    public void setCorrectRotation(int correct_rotation) {
+        this.correct_rotation = correct_rotation;
     }
 }

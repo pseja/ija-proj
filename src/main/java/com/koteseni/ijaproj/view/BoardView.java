@@ -13,10 +13,15 @@ import com.koteseni.ijaproj.model.Source;
 import com.koteseni.ijaproj.model.Tile;
 import com.koteseni.ijaproj.model.Wire;
 
+import javafx.geometry.Pos;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 
 public class BoardView {
 
@@ -81,6 +86,10 @@ public class BoardView {
                 stack_pane.getChildren().add(tile_view);
             }
 
+            if (game_controller != null && game_controller.areHintsEnabled()) {
+                showHintOverlay(stack_pane, tile);
+            }
+
             // handling clicks only when the game is not in replay mode
             if (game_controller != null) {
                 stack_pane.setOnMouseClicked(event -> {
@@ -90,6 +99,20 @@ public class BoardView {
         }
 
         return stack_pane;
+    }
+
+    private void showHintOverlay(StackPane stack_pane, Tile tile) {
+        int rotations_needed = tile.getRotationsToCorrect();
+        int total_rotations = tile.getPlayerRotationCount();
+
+        Label hint_label = new Label(total_rotations + "    " + rotations_needed);
+        hint_label.setTextFill(rotations_needed == 0 ? Color.LIGHTGREEN : Color.WHITE);
+        hint_label.setFont(Font.font("System", FontWeight.BOLD, 13));
+
+        StackPane hint_pane = new StackPane(hint_label);
+        hint_pane.setAlignment(Pos.CENTER);
+        stack_pane.getChildren().add(hint_pane);
+        StackPane.setAlignment(hint_pane, Pos.TOP_CENTER);
     }
 
     private int calculateRotation(Tile tile) {

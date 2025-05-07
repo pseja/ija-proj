@@ -1,19 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.text.Font?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-    prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/23.0.1"
+    prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1"
     xmlns:fx="http://javafx.com/fxml/1"
     fx:controller="com.koteseni.ijaproj.controller.GameController">
     <center>
-        <GridPane fx:id="board_grid" alignment="CENTER" gridLinesVisible="true" prefHeight="716.0"
-            prefWidth="1091.0" BorderPane.alignment="CENTER">
+        <GridPane fx:id="board_grid" alignment="CENTER" gridLinesVisible="true"
+            BorderPane.alignment="CENTER">
             <BorderPane.margin>
                 <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
             </BorderPane.margin>
         </GridPane>
     </center>
+    <bottom>
+        <HBox alignment="CENTER" spacing="20.0" BorderPane.alignment="CENTER">
+            <children>
+                <Label fx:id="move_counter_label" text="Moves" textAlignment="CENTER">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                </Label>
+                <Region HBox.hgrow="ALWAYS" />
+                <Button fx:id="hint_button" mnemonicParsing="false" onAction="#handleHintsButton"
+                    text="Hints">
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                </Button>
+                <Button fx:id="save_button" mnemonicParsing="false" onAction="#handleSaveButton"
+                    text="Save">
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                </Button>
+                <Button fx:id="return_button" mnemonicParsing="false" onAction="#handleBackButton"
+                    text="Back">
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                </Button>
+                <Region HBox.hgrow="ALWAYS" />
+                <Label fx:id="timer_label" text="Time" textAlignment="CENTER">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                </Label>
+            </children>
+            <padding>
+                <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+            </padding>
+        </HBox>
+    </bottom>
 </BorderPane>
