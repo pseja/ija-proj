@@ -7,6 +7,7 @@ module com.koteseni.ijaproj {
     requires eu.hansolo.tilesfx;
 
     requires gson;
+    requires java.sql;
 
     opens com.koteseni.ijaproj to javafx.fxml;
     opens com.koteseni.ijaproj.controller to javafx.fxml;
