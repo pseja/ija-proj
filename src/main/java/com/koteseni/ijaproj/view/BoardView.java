@@ -25,12 +25,13 @@ import javafx.scene.text.FontWeight;
 
 public class BoardView {
 
-    // default 64 for now, make it so that it scales with the window size somehow
-    private static final double TILE_SIZE = 64;
+    private static final double GRID_WIDTH = 500;
+    private static final double GRID_HEIGHT = 500;
 
     private final GridPane grid_pane;
     private final Board board;
     private final GameController game_controller;
+    private final double tile_size;
 
     private final Map<String, Image> image_cache = new HashMap<>();
 
@@ -38,6 +39,7 @@ public class BoardView {
         this.grid_pane = grid_pane;
         this.board = board;
         this.game_controller = game_controller;
+        tile_size = Math.floor(Math.min(GRID_WIDTH / board.getCols(), GRID_HEIGHT / board.getRows()));
     }
 
     public void updateView() {
@@ -57,9 +59,9 @@ public class BoardView {
 
     private StackPane createTilePane(Tile tile, int row, int col) {
         StackPane stack_pane = new StackPane();
-        stack_pane.setPrefSize(TILE_SIZE, TILE_SIZE);
-        stack_pane.setMaxSize(TILE_SIZE, TILE_SIZE);
-        stack_pane.setMinSize(TILE_SIZE, TILE_SIZE);
+        stack_pane.setPrefSize(tile_size, tile_size);
+        stack_pane.setMaxSize(tile_size, tile_size);
+        stack_pane.setMinSize(tile_size, tile_size);
 
         Image background_image;
         if (tile instanceof Source) {
@@ -70,8 +72,8 @@ public class BoardView {
 
         if (background_image != null) {
             ImageView background_view = new ImageView(background_image);
-            background_view.setFitWidth(TILE_SIZE);
-            background_view.setFitHeight(TILE_SIZE);
+            background_view.setFitWidth(tile_size);
+            background_view.setFitHeight(tile_size);
             stack_pane.getChildren().add(background_view);
         }
 
@@ -80,8 +82,8 @@ public class BoardView {
             Image tile_image = getImage(tile_image_name);
             if (tile_image != null) {
                 ImageView tile_view = new ImageView(tile_image);
-                tile_view.setFitWidth(TILE_SIZE);
-                tile_view.setFitHeight(TILE_SIZE);
+                tile_view.setFitWidth(tile_size);
+                tile_view.setFitHeight(tile_size);
                 tile_view.setRotate(calculateRotation(tile));
                 stack_pane.getChildren().add(tile_view);
             }
@@ -107,7 +109,9 @@ public class BoardView {
 
         Label hint_label = new Label(total_rotations + "    " + rotations_needed);
         hint_label.setTextFill(rotations_needed == 0 ? Color.LIGHTGREEN : Color.WHITE);
-        hint_label.setFont(Font.font("System", FontWeight.BOLD, 13));
+
+        double font_size = Math.max(13, tile_size / 5);
+        hint_label.setFont(Font.font("System", FontWeight.BOLD, font_size));
 
         StackPane hint_pane = new StackPane(hint_label);
         hint_pane.setAlignment(Pos.CENTER);
