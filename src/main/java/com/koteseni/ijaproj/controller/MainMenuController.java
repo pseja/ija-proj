@@ -8,17 +8,39 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
+/**
+ * Controller for the main menu.
+ * 
+ * @author ≽^•⩊•^≼ The Koteseni Team ≽^•⩊•^≼
+ */
 public class MainMenuController {
 
+    /**
+     * Button for starting a new game.
+     */
     @FXML
     private Button new_game_button;
 
+    /**
+     * Button for going into the replay menu.
+     */
     @FXML
     private Button replay_game_button;
 
+    /**
+     * Button for exiting the application.
+     */
     @FXML
     private Button exit_button;
 
+    /**
+     * Handles clicking the "New Game" button.
+     * 
+     * <p>
+     * Switches from the main menu to the difficulty selection menu using the
+     * SceneController.
+     * </p>
+     */
     @FXML
     private void handleNewGameButton() {
         try {
@@ -30,6 +52,13 @@ public class MainMenuController {
         }
     }
 
+    /**
+     * Handles clicking the "Replay Game" button.
+     * 
+     * <p>
+     * Switches from the main menu to the replay menu using the SceneController.
+     * </p>
+     */
     @FXML
     private void handleReplayGameButton() {
         try {
@@ -41,11 +70,27 @@ public class MainMenuController {
         }
     }
 
+    /**
+     * Handles clicking the "Exit" button.
+     * 
+     * <p>
+     * Exits the application.
+     * </p>
+     */
     @FXML
     private void handleExitButton() {
         Platform.exit();
     }
 
+    /**
+     * Displays an error dialog with the specified message.
+     * 
+     * <p>
+     * Shows error messages when scene switching fails.
+     * </p>
+     *
+     * @param message The error message to display
+     */
     private void showErrorBox(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
