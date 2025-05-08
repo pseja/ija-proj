@@ -1,0 +1,130 @@
+@font-face {
+    -fx-font-family: 'Minecraft';
+    font-family: 'Minecraft';
+    src: url('../font/MinecraftRegular.otf');
+}
+
+.background {
+    -fx-background-image: url("../assets/dirt_background.png");
+    background-image: url("../assets/dirt_background.png");
+    -fx-background-repeat: repeat;
+    background-repeat: repeat;
+}
+
+.label {
+    -fx-font-family: 'Minecraft';
+    font-family: 'Minecraft';
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(gaussian, #3F3F3F, 2, 0, 3, 3);
+}
+
+.button {
+    -fx-font-family: 'Minecraft';
+    font-family: 'Minecraft';
+    -fx-text-fill: white;
+
+    -fx-background-image: url("../assets/stone_button.png");
+    background-image: url("../assets/stone_button.png");
+    -fx-background-repeat: repeat;
+    background-repeat: repeat;
+    -fx-border-color: black;
+    border-color: black;
+    -fx-border-width: 2px;
+    border-width: 2px;
+    -fx-border-style: solid;
+    border-style: solid;
+    -fx-padding: 6px 12px;
+    padding: 6px 12px;
+    -fx-background-insets: 0;
+
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+.button .text {
+    -fx-effect: dropshadow(gaussian, #3F3F3F, 2, 0, 3, 3);
+}
+
+.button:hover,
+.button:hover:focused,
+.button:focused:hover {
+    -fx-border-color: white;
+    border-color: white;
+    -fx-border-width: 2px;
+    border-width: 2px;
+    -fx-padding: 6px 12px;
+    padding: 6px 12px;
+    -fx-font-family: 'Minecraft';
+    font-family: 'Minecraft';
+    -fx-text-fill: white;
+}
+
+.button:focused {
+    -fx-border-color: black;
+    border-color: black;
+    -fx-border-width: 2px;
+    border-width: 2px;
+    -fx-padding: 6px 12px;
+    padding: 6px 12px;
+    -fx-font-family: 'Minecraft';
+    font-family: 'Minecraft';
+    -fx-text-fill: white;
+    -fx-background-insets: 0;
+}
+
+#easy_button {
+    -fx-text-fill: lightgreen !important;
+}
+
+#medium_button {
+    -fx-text-fill: orange !important;
+}
+
+#hard_button {
+    -fx-text-fill: red !important;
+}
+
+#hardcore_button {
+    -fx-text-fill: darkred !important;
+}
+
+.hint-correct {
+    -fx-text-fill: lightgreen;
+}
+
+#saved_games_list {
+    -fx-background-image: url("../assets/stone_button.png");
+    background-image: url("../assets/stone_button.png");
+    -fx-background-repeat: repeat;
+    background-repeat: repeat;
+    -fx-border-color: black;
+    border-color: black;
+    -fx-border-width: 2px;
+    border-width: 2px;
+}
+
+#saved_games_list .list-cell {
+    -fx-font-family: 'Minecraft';
+    font-family: 'Minecraft';
+    -fx-text-fill: white;
+    -fx-background-color: transparent;
+    background-color: transparent;
+}
+
+#saved_games_list .list-cell .text {
+    -fx-effect: dropshadow(gaussian, #3F3F3F, 2, 0, 3, 3);
+}
+
+#saved_games_list .list-cell:filled:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+#saved_games_list .list-cell:filled:selected {
+    -fx-background-color: rgba(255, 255, 255, 0.4);
+    background-color: rgba(255, 255, 255, 0.4);
+}
+
+#saved_games_list .list-cell:filled:selected .text {
+    -fx-effect: dropshadow(gaussian, #3F3F3F, 2, 0, 3, 3);
+}

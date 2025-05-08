@@ -9,59 +9,41 @@
 <?import javafx.scene.text.Font?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-    prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21"
-    xmlns:fx="http://javafx.com/fxml/1"
+    prefHeight="600.0" prefWidth="800.0" styleClass="background" stylesheets="@styles.css"
+    xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
     fx:controller="com.koteseni.ijaproj.controller.DifficultyController">
     <center>
         <VBox alignment="CENTER" spacing="15.0" BorderPane.alignment="CENTER">
             <children>
-                <Label text="Select Difficulty">
-                    <font>
-                        <Font name="System Bold" size="40.0" />
-                    </font>
+                <Label text="Select Difficulty" style="-fx-font-size: 40px;">
                 </Label>
                 <Button fx:id="easy_button" mnemonicParsing="false" onAction="#handleEasyButton"
-                    prefHeight="50.0" prefWidth="200.0" text="Easy" textFill="#09fea3">
-                    <font>
-                        <Font size="18.0" />
-                    </font>
+                    prefHeight="50.0" prefWidth="200.0" text="Easy" style="-fx-font-size: 18px;">
                     <cursor>
                         <Cursor fx:constant="HAND" />
                     </cursor>
                 </Button>
                 <Button fx:id="medium_button" mnemonicParsing="false" onAction="#handleMediumButton"
-                    prefHeight="50.0" prefWidth="200.0" text="Medium" textFill="#ffa400">
-                    <font>
-                        <Font size="18.0" />
-                    </font>
+                    prefHeight="50.0" prefWidth="200.0" text="Medium" style="-fx-font-size: 18px;">
                     <cursor>
                         <Cursor fx:constant="HAND" />
                     </cursor>
                 </Button>
                 <Button fx:id="hard_button" mnemonicParsing="false" onAction="#handleHardButton"
-                    prefHeight="50.0" prefWidth="200.0" text="Hard" textFill="#f91900">
-                    <font>
-                        <Font size="18.0" />
-                    </font>
+                    prefHeight="50.0" prefWidth="200.0" text="Hard" style="-fx-font-size: 18px;">
                     <cursor>
                         <Cursor fx:constant="HAND" />
                     </cursor>
                 </Button>
                 <Button fx:id="hardcore_button" mnemonicParsing="false"
                     onAction="#handleHardcoreButton" prefHeight="50.0" prefWidth="200.0"
-                    text="Hardcore" textFill="#cc0038">
-                    <font>
-                        <Font size="18.0" />
-                    </font>
+                    text="Hardcore" style="-fx-font-size: 18px;">
                     <cursor>
                         <Cursor fx:constant="HAND" />
                     </cursor>
                 </Button>
                 <Button fx:id="back_button" mnemonicParsing="false" onAction="#handleBackButton"
-                    prefHeight="30.0" prefWidth="120.0" text="Back">
-                    <font>
-                        <Font size="14.0" />
-                    </font>
+                    prefHeight="30.0" prefWidth="120.0" text="Back" style="-fx-font-size: 14px;">
                     <VBox.margin>
                         <Insets top="20.0" />
                     </VBox.margin>

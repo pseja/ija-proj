@@ -19,7 +19,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
@@ -108,10 +107,15 @@ public class BoardView {
         int total_rotations = tile.getPlayerRotationCount();
 
         Label hint_label = new Label(total_rotations + "    " + rotations_needed);
-        hint_label.setTextFill(rotations_needed == 0 ? Color.LIGHTGREEN : Color.WHITE);
+
+        if (rotations_needed == 0) {
+            hint_label.getStyleClass().add("hint-correct");
+        } else {
+            hint_label.getStyleClass().remove("hint-correct");
+        }
 
         double font_size = Math.max(13, tile_size / 5);
-        hint_label.setFont(Font.font("System", FontWeight.BOLD, font_size));
+        hint_label.setFont(Font.font("Minecraft", FontWeight.BOLD, font_size));
 
         StackPane hint_pane = new StackPane(hint_label);
         hint_pane.setAlignment(Pos.CENTER);
