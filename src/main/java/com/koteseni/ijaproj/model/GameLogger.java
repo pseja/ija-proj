@@ -73,10 +73,10 @@ public class GameLogger {
         return save_file_path.toString();
     }
 
-    public static GameState loadGame(String filePath) throws IOException {
+    public static GameState loadGame(String file_path) throws IOException {
         JsonObject game_data;
 
-        try (FileReader reader = new FileReader(filePath)) {
+        try (FileReader reader = new FileReader(file_path)) {
             JsonParser parser = new JsonParser();
             game_data = parser.parse(reader).getAsJsonObject();
         }

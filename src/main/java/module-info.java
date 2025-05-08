@@ -1,12 +1,12 @@
 module com.koteseni.ijaproj {
-    requires javafx.controls;
-    requires javafx.fxml;
-    requires javafx.web;
+    requires transitive javafx.controls;
+    requires transitive javafx.fxml;
+    requires transitive javafx.web;
 
     requires org.controlsfx.controls;
     requires eu.hansolo.tilesfx;
 
-    requires gson;
+    requires transitive gson;
     requires java.sql;
 
     opens com.koteseni.ijaproj to javafx.fxml;

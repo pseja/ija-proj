@@ -7,6 +7,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
 
 import com.koteseni.ijaproj.model.Board;
@@ -28,6 +29,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -148,13 +151,13 @@ public class GameController {
         return cell_map;
     }
 
-    private void addUnvisitedNeighborsToCells(Cell cell, List<Cell> frontier, Map<String, Cell> cell_map, int rows,
+    private void addUnvisitedNeighborsToCells(Cell cell, List<Cell> cells, Map<String, Cell> cell_map, int rows,
             int cols) {
 
-        addNeighbor(cell.getRow() - 1, cell.getCol(), frontier, cell_map, rows, cols); // North
-        addNeighbor(cell.getRow(), cell.getCol() + 1, frontier, cell_map, rows, cols); // East
-        addNeighbor(cell.getRow() + 1, cell.getCol(), frontier, cell_map, rows, cols); // South
-        addNeighbor(cell.getRow(), cell.getCol() - 1, frontier, cell_map, rows, cols); // West
+        addNeighbor(cell.getRow() - 1, cell.getCol(), cells, cell_map, rows, cols); // North
+        addNeighbor(cell.getRow(), cell.getCol() + 1, cells, cell_map, rows, cols); // East
+        addNeighbor(cell.getRow() + 1, cell.getCol(), cells, cell_map, rows, cols); // South
+        addNeighbor(cell.getRow(), cell.getCol() - 1, cells, cell_map, rows, cols); // West
     }
 
     private void addNeighbor(int row, int col, List<Cell> cells, Map<String, Cell> cell_map, int rows,
@@ -376,8 +379,8 @@ public class GameController {
         }
     }
 
-    public void takeOver(Board existingBoard, int difficulty) {
-        this.board = existingBoard;
+    public void takeOver(Board board, int difficulty) {
+        this.board = board;
         move_count = 0;
 
         initializeTimer();
@@ -415,20 +418,18 @@ public class GameController {
             timer.stop();
         }
 
-        // show alert if the user wants to save the game before returning to the
-        // main menu
         Alert confirm_alert = new Alert(AlertType.CONFIRMATION);
         confirm_alert.setTitle("Want to save?");
         confirm_alert.setContentText("Would you like to save the game before returning to the main menu?");
 
-        javafx.scene.control.ButtonType save_button = new javafx.scene.control.ButtonType("Yes");
-        javafx.scene.control.ButtonType dont_save_button = new javafx.scene.control.ButtonType("No");
-        javafx.scene.control.ButtonType cancel_button = new javafx.scene.control.ButtonType("Cancel",
-                javafx.scene.control.ButtonBar.ButtonData.CANCEL_CLOSE);
+        ButtonType save_button = new ButtonType("Yes");
+        ButtonType dont_save_button = new ButtonType("No");
+        ButtonType cancel_button = new ButtonType("Cancel",
+                ButtonData.CANCEL_CLOSE);
 
         confirm_alert.getButtonTypes().setAll(save_button, dont_save_button, cancel_button);
 
-        java.util.Optional<javafx.scene.control.ButtonType> result = confirm_alert.showAndWait();
+        Optional<ButtonType> result = confirm_alert.showAndWait();
 
         if (result.isPresent()) {
             if (result.get() == save_button) {
@@ -449,16 +450,9 @@ public class GameController {
 
     private void returnToMainMenu() {
         try {
-            FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/com/koteseni/ijaproj/view/main-menu.fxml"));
-            Parent root = loader.load();
-
-            Stage stage = new Stage();
-            stage.setTitle("Koteseni - Main Menu");
-            stage.setScene(new Scene(root));
-            stage.show();
-
-            ((Stage) board_grid.getScene().getWindow()).close();
+            Stage stage = (Stage) board_grid.getScene().getWindow();
+            SceneController.changeScene("Koteseni - Main Menu",
+                    "/com/koteseni/ijaproj/view/main-menu.fxml", stage);
         } catch (IOException e) {
             showErrorBox("Error returning to main menu: " + e.getMessage());
         }

@@ -11,23 +11,31 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.koteseni.ijaproj.controller.ReplayController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+    prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21"
+    xmlns:fx="http://javafx.com/fxml/1"
+    fx:controller="com.koteseni.ijaproj.controller.ReplayController">
     <left>
         <VBox prefHeight="600.0" prefWidth="200.0" spacing="10.0" BorderPane.alignment="CENTER">
             <children>
                 <Label text="Saved games" />
-                <ListView fx:id="saved_games_list" prefHeight="464.0" prefWidth="180.0" VBox.vgrow="ALWAYS" />
-                <Button fx:id="replay_selected_game_button" mnemonicParsing="false" onAction="#handleReplaySelectedGameButton" prefHeight="25.0" prefWidth="200.0" text="Replay selected game">
+                <ListView fx:id="saved_games_list" prefHeight="464.0" prefWidth="180.0"
+                    VBox.vgrow="ALWAYS" />
+                <Button fx:id="replay_selected_game_button" mnemonicParsing="false"
+                    onAction="#handleReplaySelectedGameButton" prefHeight="25.0" prefWidth="200.0"
+                    text="Replay selected game">
                     <cursor>
                         <Cursor fx:constant="HAND" />
                     </cursor>
                 </Button>
-                <Button fx:id="browse_button" mnemonicParsing="false" onAction="#handleBrowseButton" prefHeight="25.0" prefWidth="200.0" text="Browse">
+                <Button fx:id="browse_button" mnemonicParsing="false" onAction="#handleBrowseButton"
+                    prefHeight="25.0" prefWidth="200.0" text="Browse">
                     <cursor>
                         <Cursor fx:constant="HAND" />
                     </cursor>
                 </Button>
-                <Button fx:id="back_button" mnemonicParsing="false" onAction="#handleBackButton" prefHeight="25.0" prefWidth="200.0" text="Back">
+                <Button fx:id="back_button" mnemonicParsing="false" onAction="#handleBackButton"
+                    prefHeight="25.0" prefWidth="200.0" text="Back">
                     <cursor>
                         <Cursor fx:constant="HAND" />
                     </cursor>
@@ -42,33 +50,41 @@
         <VBox alignment="CENTER" prefHeight="600.0" prefWidth="600.0" BorderPane.alignment="CENTER">
             <children>
                 <Label fx:id="save_name_label" text="" />
-                <GridPane fx:id="board_grid" alignment="CENTER" gridLinesVisible="true" maxHeight="580.0" maxWidth="580.0" minHeight="100.0" minWidth="100.0" prefHeight="400.0" prefWidth="400.0" VBox.vgrow="ALWAYS">
+                <GridPane fx:id="board_grid" alignment="CENTER" gridLinesVisible="true"
+                    maxHeight="580.0" maxWidth="580.0" minHeight="100.0" minWidth="100.0"
+                    prefHeight="400.0" prefWidth="400.0" VBox.vgrow="ALWAYS">
                 </GridPane>
                 <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" spacing="75.0">
                     <children>
-                        <Button fx:id="step_back_button" disable="true" mnemonicParsing="false" onAction="#handleStepBackButton" prefHeight="42.0" prefWidth="88.0" text="&lt;">
+                        <Button fx:id="step_back_button" disable="true" mnemonicParsing="false"
+                            onAction="#handleStepBackButton" prefHeight="42.0" prefWidth="88.0"
+                            text="&lt;">
                             <cursor>
                                 <Cursor fx:constant="HAND" />
                             </cursor>
-                     <font>
-                        <Font size="22.0" />
-                     </font>
+                            <font>
+                                <Font size="22.0" />
+                            </font>
                         </Button>
-                        <Button fx:id="take_over_button" disable="true" mnemonicParsing="false" onAction="#handleTakeOverButton" prefHeight="42.0" prefWidth="172.0" text="Take over">
+                        <Button fx:id="take_over_button" disable="true" mnemonicParsing="false"
+                            onAction="#handleTakeOverButton" prefHeight="42.0" prefWidth="172.0"
+                            text="Take over">
                             <cursor>
                                 <Cursor fx:constant="HAND" />
                             </cursor>
-                     <font>
-                        <Font size="22.0" />
-                     </font>
+                            <font>
+                                <Font size="22.0" />
+                            </font>
                         </Button>
-                        <Button fx:id="step_forward_button" disable="true" mnemonicParsing="false" onAction="#handleStepForwardButton" prefHeight="42.0" prefWidth="88.0" text="&gt;">
+                        <Button fx:id="step_forward_button" disable="true" mnemonicParsing="false"
+                            onAction="#handleStepForwardButton" prefHeight="42.0" prefWidth="88.0"
+                            text="&gt;">
                             <cursor>
                                 <Cursor fx:constant="HAND" />
                             </cursor>
-                     <font>
-                        <Font size="22.0" />
-                     </font>
+                            <font>
+                                <Font size="22.0" />
+                            </font>
                         </Button>
                     </children>
                 </HBox>

@@ -2,13 +2,8 @@ package com.koteseni.ijaproj.controller;
 
 import java.io.IOException;
 
-import com.koteseni.ijaproj.Main;
-
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
@@ -31,37 +26,30 @@ public class DifficultyController {
     private Button back_button;
 
     @FXML
-    private void handleEasyButton(ActionEvent event) {
+    private void handleEasyButton() {
         startGame(1);
     }
 
     @FXML
-    private void handleMediumButton(ActionEvent event) {
+    private void handleMediumButton() {
         startGame(2);
     }
 
     @FXML
-    private void handleHardButton(ActionEvent event) {
+    private void handleHardButton() {
         startGame(3);
     }
 
     @FXML
-    private void handleHardcoreButton(ActionEvent event) {
+    private void handleHardcoreButton() {
         startGame(4);
     }
 
     @FXML
-    private void handleBackButton(ActionEvent event) {
+    private void handleBackButton() {
         try {
-            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/com/koteseni/ijaproj/view/main-menu.fxml"));
-            Parent root = loader.load();
-
-            Stage stage = new Stage();
-            stage.setTitle("Koteseni - Main Menu");
-            stage.setScene(new Scene(root));
-            stage.show();
-
-            ((Stage) back_button.getScene().getWindow()).close();
+            Stage stage = (Stage) back_button.getScene().getWindow();
+            SceneController.changeScene("Koteseni - Main Menu", "/com/koteseni/ijaproj/view/main-menu.fxml", stage);
         } catch (IOException e) {
             showErrorBox("Error returning to main menu: " + e.getMessage());
         }
@@ -69,31 +57,16 @@ public class DifficultyController {
 
     private void startGame(int difficulty) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/koteseni/ijaproj/view/game-view.fxml"));
-            Parent root = loader.load();
+            Stage stage = (Stage) back_button.getScene().getWindow();
+            FXMLLoader loader = SceneController.changeScene("Koteseni", "/com/koteseni/ijaproj/view/game-view.fxml",
+                    stage);
 
             GameController controller = loader.getController();
             controller.startNewGame(difficulty);
-
-            Stage stage = new Stage();
-            stage.setTitle("Koteseni");
-            stage.setScene(new Scene(root));
-            stage.show();
-
-            ((Stage) back_button.getScene().getWindow()).close();
         } catch (IOException e) {
             showErrorBox("Error starting the game: " + e.getMessage());
         }
     }
-
-    // not needed for now, but saving it for later just in case
-    // private void showInfoBox(String message) {
-    // Alert alert = new Alert(Alert.AlertType.INFORMATION);
-    // alert.setTitle("Info");
-    // alert.setHeaderText(null);
-    // alert.setContentText(message);
-    // alert.showAndWait();
-    // }
 
     private void showErrorBox(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);

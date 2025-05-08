@@ -12,7 +12,7 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
     prefHeight="600.0" prefWidth="800.0" styleClass="background"
-    xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+    xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
     fx:controller="com.koteseni.ijaproj.controller.MainMenuController">
     <center>
         <VBox alignment="CENTER" prefHeight="290.0" prefWidth="516.0" spacing="20.0"
@@ -29,8 +29,8 @@
                     </image>
                 </ImageView>
                 <Button fx:id="new_game_button" mnemonicParsing="false"
-                    onAction="#handleNewGameButton"
-                    prefHeight="40.0" prefWidth="200.0" text="New Game">
+                    onAction="#handleNewGameButton" prefHeight="40.0" prefWidth="200.0"
+                    text="New Game">
                     <font>
                         <Font size="18.0" />
                     </font>
@@ -39,18 +39,8 @@
                     </cursor>
                 </Button>
                 <Button fx:id="replay_game_button" mnemonicParsing="false"
-                    onAction="#handleReplayGameButton"
-                    prefHeight="40.0" prefWidth="200.0" text="Replay Game">
-                    <font>
-                        <Font size="18.0" />
-                    </font>
-                    <cursor>
-                        <Cursor fx:constant="HAND" />
-                    </cursor>
-                </Button>
-                <Button fx:id="settings_button" mnemonicParsing="false"
-                    onAction="#handleSettingsButton"
-                    prefHeight="40.0" prefWidth="200.0" text="Settings">
+                    onAction="#handleReplayGameButton" prefHeight="40.0" prefWidth="200.0"
+                    text="Replay Game">
                     <font>
                         <Font size="18.0" />
                     </font>

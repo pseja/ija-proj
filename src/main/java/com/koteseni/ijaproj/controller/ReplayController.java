@@ -6,17 +6,13 @@ import java.nio.file.Path;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import com.koteseni.ijaproj.Main;
 import com.koteseni.ijaproj.model.Board;
 import com.koteseni.ijaproj.model.GameLogger;
 import com.koteseni.ijaproj.model.GameState;
 import com.koteseni.ijaproj.view.BoardView;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -76,7 +72,7 @@ public class ReplayController {
     }
 
     @FXML
-    private void handleReplaySelectedGameButton(ActionEvent event) {
+    private void handleReplaySelectedGameButton() {
         String selected = saved_games_list.getSelectionModel().getSelectedItem();
         if (selected == null) {
             showErrorBox("Select a saved game to load first or browse for a save file.");
@@ -87,7 +83,7 @@ public class ReplayController {
     }
 
     @FXML
-    private void handleBrowseButton(ActionEvent event) {
+    private void handleBrowseButton() {
         FileChooser file_chooser = new FileChooser();
         file_chooser.setTitle("Open Saved Game");
         file_chooser.getExtensionFilters().add(
@@ -100,24 +96,18 @@ public class ReplayController {
     }
 
     @FXML
-    private void handleBackButton(ActionEvent event) {
+    private void handleBackButton() {
         try {
-            FXMLLoader loader = new FXMLLoader(Main.class.getResource("view/main-menu.fxml"));
-            Parent root = loader.load();
-
-            Stage stage = new Stage();
-            stage.setTitle("Koteseni - Main Menu");
-            stage.setScene(new Scene(root));
-            stage.show();
-
-            ((Stage) back_button.getScene().getWindow()).close();
+            Stage stage = (Stage) back_button.getScene().getWindow();
+            SceneController.changeScene("Koteseni - Main Menu",
+                    "/com/koteseni/ijaproj/view/main-menu.fxml", stage);
         } catch (IOException e) {
             showErrorBox("Error returning to main menu: " + e.getMessage());
         }
     }
 
     @FXML
-    private void handleStepBackButton(ActionEvent event) {
+    private void handleStepBackButton() {
         if (current_game_state == null) {
             return;
         }
@@ -135,7 +125,7 @@ public class ReplayController {
     }
 
     @FXML
-    private void handleStepForwardButton(ActionEvent event) {
+    private void handleStepForwardButton() {
         if (current_game_state == null) {
             return;
         }
@@ -155,14 +145,15 @@ public class ReplayController {
     }
 
     @FXML
-    private void handleTakeOverButton(ActionEvent event) {
+    private void handleTakeOverButton() {
         if (current_game_state == null) {
             return;
         }
 
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/koteseni/ijaproj/view/game-view.fxml"));
-            Parent root = loader.load();
+            Stage stage = (Stage) back_button.getScene().getWindow();
+            FXMLLoader loader = SceneController.changeScene("Koteseni",
+                    "/com/koteseni/ijaproj/view/game-view.fxml", stage);
 
             Board new_board = current_game_state.createInitialBoard();
             if (current_move_index >= 0) {
@@ -171,23 +162,16 @@ public class ReplayController {
 
             GameController controller = loader.getController();
             controller.takeOver(new_board, current_game_state.getDifficulty());
-
-            Stage stage = new Stage();
-            stage.setTitle("Koteseni");
-            stage.setScene(new Scene(root));
-            stage.show();
-
-            ((Stage) back_button.getScene().getWindow()).close();
         } catch (IOException e) {
             showErrorBox("Error starting game in play mode: " + e.getMessage());
         }
     }
 
-    private void loadGameFromFile(String filePath) {
+    private void loadGameFromFile(String file_path) {
         try {
             current_move_index = -1;
 
-            current_game_state = GameLogger.loadGame(filePath);
+            current_game_state = GameLogger.loadGame(file_path);
             board = current_game_state.createInitialBoard();
 
             board_view = new BoardView(board_grid, board, null);
@@ -205,11 +189,11 @@ public class ReplayController {
         }
     }
 
-    private void replayMovesUpTo(int moveIndex) {
+    private void replayMovesUpTo(int move_index) {
         board = current_game_state.createInitialBoard();
 
-        if (moveIndex >= 0) {
-            current_game_state.applyMoves(board, moveIndex);
+        if (move_index >= 0) {
+            current_game_state.applyMoves(board, move_index);
         }
 
         board.propagatePower();
