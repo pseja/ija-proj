@@ -22,18 +22,41 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
+/**
+ * Handles rendering the game board.
+ * 
+ * @author ≽^•⩊•^≼ The Koteseni Team ≽^•⩊•^≼
+ */
 public class BoardView {
 
+    /** Standard width for the grid pane. */
     private static final double GRID_WIDTH = 500;
+
+    /** Standard height for the grid pane. */
     private static final double GRID_HEIGHT = 500;
 
+    /** The grid pane where tiles are rendered. */
     private final GridPane grid_pane;
+
+    /** The game board. */
     private final Board board;
+
+    /** The controller handling game logic. */
     private final GameController game_controller;
+
+    /** Size of individual tiles, calculated based on board dimensions. */
     private final double tile_size;
 
+    /** Cache for loaded images to improve performance. */
     private final Map<String, Image> image_cache = new HashMap<>();
 
+    /**
+     * Creates a new BoardView for rendering a game board.
+     *
+     * @param grid_pane       The grid pane where tiles will be rendered
+     * @param board           The board model to render
+     * @param game_controller The controller handling game logic
+     */
     public BoardView(GridPane grid_pane, Board board, GameController game_controller) {
         this.grid_pane = grid_pane;
         this.board = board;
@@ -41,6 +64,14 @@ public class BoardView {
         tile_size = Math.floor(Math.min(GRID_WIDTH / board.getCols(), GRID_HEIGHT / board.getRows()));
     }
 
+    /**
+     * Updates the view to show the current state of the board.
+     * 
+     * <p>
+     * This method is called every time the board changes (tile rotation, power
+     * propagation, hint overlay).
+     * </p>
+     */
     public void updateView() {
         grid_pane.getChildren().clear();
 
@@ -56,6 +87,24 @@ public class BoardView {
         }
     }
 
+    /**
+     * Creates a StackPane representing a single tile on the board.
+     * 
+     * <p>
+     * Sets up click handling for player interaction and contains:
+     * <ol>
+     * <li>A background image (grass or redstone block)</li>
+     * <li>An image representing the tile itself</li>
+     * <li>Optional hint overlay if hint mode is enabled</li>
+     * </ol>
+     * </p>
+     *
+     * @param tile The tile to render, or null for an empty space
+     * @param row  The row position of the tile
+     * @param col  The column position of the tile
+     * 
+     * @return A StackPane representing the tile
+     */
     private StackPane createTilePane(Tile tile, int row, int col) {
         StackPane stack_pane = new StackPane();
         stack_pane.setPrefSize(tile_size, tile_size);
@@ -102,6 +151,12 @@ public class BoardView {
         return stack_pane;
     }
 
+    /**
+     * Adds a hint overlay to a tile showing rotation information.
+     *
+     * @param stack_pane The StackPane representing the tile
+     * @param tile       The tile to show hints for
+     */
     private void showHintOverlay(StackPane stack_pane, Tile tile) {
         int rotations_needed = tile.getRotationsToCorrect();
         int total_rotations = tile.getPlayerRotationCount();
@@ -123,6 +178,12 @@ public class BoardView {
         StackPane.setAlignment(hint_pane, Pos.TOP_CENTER);
     }
 
+    /**
+     * Calculates the proper rotation angle for a tile image.
+     * 
+     * @param tile The tile to calculate rotation for
+     * @return The rotation angle in degrees (0, 90, 180, or 270)
+     */
     private int calculateRotation(Tile tile) {
         EnumSet<Direction> connections = tile.getConnections();
 
@@ -212,6 +273,12 @@ public class BoardView {
         };
     }
 
+    /**
+     * Loads and caches an image from the assets/ directory.
+     *
+     * @param filename The name of the image file
+     * @return The loaded image, or null if the image could not be loaded
+     */
     private Image getImage(String filename) {
         if (image_cache.containsKey(filename)) {
             return image_cache.get(filename);
@@ -230,6 +297,12 @@ public class BoardView {
         return image;
     }
 
+    /**
+     * Determines the image filename for a tile.
+     *
+     * @param tile The tile to get an image for
+     * @return The filename of the appropriate image
+     */
     private String getTileImageName(Tile tile) {
         String component_name = "";
         String suffix = tile.isPowered() ? "_on.png" : "_off.png";
