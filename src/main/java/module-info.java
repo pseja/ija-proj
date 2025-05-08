@@ -3,9 +3,6 @@ module com.koteseni.ijaproj {
     requires transitive javafx.fxml;
     requires transitive javafx.web;
 
-    requires org.controlsfx.controls;
-    requires eu.hansolo.tilesfx;
-
     requires transitive gson;
     requires java.sql;
 
