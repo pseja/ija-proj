@@ -1,0 +1,478 @@
+{
+  "rows": 5,
+  "cols": 5,
+  "difficulty": 1,
+  "start_time": "2025-05-08_21-59-52",
+  "initial_board": [
+    {
+      "row": 0,
+      "col": 0,
+      "connections": [
+        "NORTH",
+        "EAST"
+      ],
+      "powered": false,
+      "rotation_count": 3,
+      "type": "wire",
+      "shape": "L"
+    },
+    {
+      "row": 0,
+      "col": 1,
+      "connections": [
+        "WEST"
+      ],
+      "powered": false,
+      "rotation_count": 0,
+      "type": "light_bulb",
+      "direction": "WEST"
+    },
+    {
+      "row": 0,
+      "col": 2,
+      "connections": [
+        "SOUTH",
+        "WEST"
+      ],
+      "powered": false,
+      "rotation_count": 1,
+      "type": "wire",
+      "shape": "L"
+    },
+    {
+      "row": 0,
+      "col": 3,
+      "connections": [
+        "NORTH",
+        "EAST",
+        "SOUTH"
+      ],
+      "powered": false,
+      "rotation_count": 3,
+      "type": "wire",
+      "shape": "T"
+    },
+    {
+      "row": 0,
+      "col": 4,
+      "connections": [
+        "SOUTH",
+        "WEST"
+      ],
+      "powered": false,
+      "rotation_count": 0,
+      "type": "wire",
+      "shape": "L"
+    },
+    {
+      "row": 1,
+      "col": 0,
+      "connections": [
+        "NORTH",
+        "SOUTH"
+      ],
+      "powered": false,
+      "rotation_count": 2,
+      "type": "wire",
+      "shape": "I"
+    },
+    {
+      "row": 1,
+      "col": 1,
+      "connections": [
+        "NORTH",
+        "WEST"
+      ],
+      "powered": false,
+      "rotation_count": 2,
+      "type": "wire",
+      "shape": "L"
+    },
+    {
+      "row": 1,
+      "col": 2,
+      "connections": [
+        "NORTH",
+        "EAST"
+      ],
+      "powered": false,
+      "rotation_count": 1,
+      "type": "wire",
+      "shape": "L"
+    },
+    {
+      "row": 1,
+      "col": 3,
+      "connections": [
+        "NORTH"
+      ],
+      "powered": false,
+      "rotation_count": 0,
+      "type": "light_bulb",
+      "direction": "NORTH"
+    },
+    {
+      "row": 1,
+      "col": 4,
+      "connections": [
+        "SOUTH"
+      ],
+      "powered": false,
+      "rotation_count": 2,
+      "type": "light_bulb",
+      "direction": "SOUTH"
+    },
+    {
+      "row": 2,
+      "col": 0,
+      "connections": [
+        "EAST",
+        "WEST"
+      ],
+      "powered": false,
+      "rotation_count": 3,
+      "type": "wire",
+      "shape": "I"
+    },
+    {
+      "row": 2,
+      "col": 1,
+      "connections": [
+        "NORTH",
+        "SOUTH"
+      ],
+      "powered": false,
+      "rotation_count": 0,
+      "type": "wire",
+      "shape": "I"
+    },
+    {
+      "row": 2,
+      "col": 2,
+      "connections": [
+        "SOUTH"
+      ],
+      "powered": false,
+      "rotation_count": 1,
+      "type": "light_bulb",
+      "direction": "SOUTH"
+    },
+    {
+      "row": 2,
+      "col": 3,
+      "connections": [
+        "NORTH",
+        "EAST"
+      ],
+      "powered": false,
+      "rotation_count": 2,
+      "type": "wire",
+      "shape": "L"
+    },
+    {
+      "row": 2,
+      "col": 4,
+      "connections": [
+        "EAST"
+      ],
+      "powered": false,
+      "rotation_count": 3,
+      "type": "light_bulb",
+      "direction": "EAST"
+    },
+    {
+      "row": 3,
+      "col": 0,
+      "connections": [
+        "NORTH",
+        "SOUTH"
+      ],
+      "powered": false,
+      "rotation_count": 2,
+      "type": "wire",
+      "shape": "I"
+    },
+    {
+      "row": 3,
+      "col": 1,
+      "connections": [
+        "NORTH",
+        "EAST",
+        "WEST"
+      ],
+      "powered": true,
+      "rotation_count": 3,
+      "type": "wire",
+      "shape": "T"
+    },
+    {
+      "row": 3,
+      "col": 2,
+      "connections": [
+        "EAST",
+        "SOUTH"
+      ],
+      "powered": true,
+      "rotation_count": 3,
+      "type": "source",
+      "shape": "L"
+    },
+    {
+      "row": 3,
+      "col": 3,
+      "connections": [
+        "NORTH",
+        "SOUTH"
+      ],
+      "powered": false,
+      "rotation_count": 0,
+      "type": "wire",
+      "shape": "I"
+    },
+    {
+      "row": 3,
+      "col": 4,
+      "connections": [
+        "NORTH",
+        "SOUTH"
+      ],
+      "powered": false,
+      "rotation_count": 2,
+      "type": "wire",
+      "shape": "I"
+    },
+    {
+      "row": 4,
+      "col": 0,
+      "connections": [
+        "NORTH",
+        "WEST"
+      ],
+      "powered": false,
+      "rotation_count": 3,
+      "type": "wire",
+      "shape": "L"
+    },
+    {
+      "row": 4,
+      "col": 1,
+      "connections": [
+        "NORTH",
+        "WEST"
+      ],
+      "powered": false,
+      "rotation_count": 0,
+      "type": "wire",
+      "shape": "L"
+    },
+    {
+      "row": 4,
+      "col": 2,
+      "connections": [
+        "EAST",
+        "SOUTH"
+      ],
+      "powered": false,
+      "rotation_count": 1,
+      "type": "wire",
+      "shape": "L"
+    },
+    {
+      "row": 4,
+      "col": 3,
+      "connections": [
+        "NORTH",
+        "EAST",
+        "SOUTH"
+      ],
+      "powered": false,
+      "rotation_count": 1,
+      "type": "wire",
+      "shape": "T"
+    },
+    {
+      "row": 4,
+      "col": 4,
+      "connections": [
+        "NORTH",
+        "WEST"
+      ],
+      "powered": false,
+      "rotation_count": 0,
+      "type": "wire",
+      "shape": "L"
+    }
+  ],
+  "moves": [
+    {
+      "row": 0,
+      "col": 4,
+      "timestamp": 1746734401821
+    },
+    {
+      "row": 0,
+      "col": 4,
+      "timestamp": 1746734402348
+    },
+    {
+      "row": 0,
+      "col": 3,
+      "timestamp": 1746734403813
+    },
+    {
+      "row": 0,
+      "col": 3,
+      "timestamp": 1746734403986
+    },
+    {
+      "row": 0,
+      "col": 3,
+      "timestamp": 1746734404312
+    },
+    {
+      "row": 0,
+      "col": 2,
+      "timestamp": 1746734405816
+    },
+    {
+      "row": 0,
+      "col": 0,
+      "timestamp": 1746734407955
+    },
+    {
+      "row": 0,
+      "col": 0,
+      "timestamp": 1746734408089
+    },
+    {
+      "row": 0,
+      "col": 0,
+      "timestamp": 1746734408245
+    },
+    {
+      "row": 0,
+      "col": 1,
+      "timestamp": 1746734408976
+    },
+    {
+      "row": 0,
+      "col": 1,
+      "timestamp": 1746734409129
+    },
+    {
+      "row": 2,
+      "col": 0,
+      "timestamp": 1746734413629
+    },
+    {
+      "row": 4,
+      "col": 0,
+      "timestamp": 1746734415374
+    },
+    {
+      "row": 4,
+      "col": 0,
+      "timestamp": 1746734415509
+    },
+    {
+      "row": 4,
+      "col": 0,
+      "timestamp": 1746734415635
+    },
+    {
+      "row": 1,
+      "col": 2,
+      "timestamp": 1746734432019
+    },
+    {
+      "row": 1,
+      "col": 3,
+      "timestamp": 1746734432529
+    },
+    {
+      "row": 1,
+      "col": 3,
+      "timestamp": 1746734432653
+    },
+    {
+      "row": 3,
+      "col": 1,
+      "timestamp": 1746734440648
+    },
+    {
+      "row": 3,
+      "col": 1,
+      "timestamp": 1746734441094
+    },
+    {
+      "row": 3,
+      "col": 1,
+      "timestamp": 1746734441935
+    },
+    {
+      "row": 4,
+      "col": 1,
+      "timestamp": 1746734443827
+    },
+    {
+      "row": 4,
+      "col": 1,
+      "timestamp": 1746734443960
+    },
+    {
+      "row": 3,
+      "col": 2,
+      "timestamp": 1746734449609
+    },
+    {
+      "row": 3,
+      "col": 2,
+      "timestamp": 1746734449988
+    },
+    {
+      "row": 3,
+      "col": 2,
+      "timestamp": 1746734450975
+    },
+    {
+      "row": 4,
+      "col": 2,
+      "timestamp": 1746734452265
+    },
+    {
+      "row": 4,
+      "col": 3,
+      "timestamp": 1746734454373
+    },
+    {
+      "row": 4,
+      "col": 4,
+      "timestamp": 1746734455275
+    },
+    {
+      "row": 4,
+      "col": 4,
+      "timestamp": 1746734455393
+    },
+    {
+      "row": 2,
+      "col": 4,
+      "timestamp": 1746734456037
+    },
+    {
+      "row": 2,
+      "col": 4,
+      "timestamp": 1746734456168
+    },
+    {
+      "row": 2,
+      "col": 4,
+      "timestamp": 1746734456299
+    },
+    {
+      "row": 2,
+      "col": 2,
+      "timestamp": 1746734456741
+    }
+  ]
+}
