@@ -1,3 +1,6 @@
+// Scene controller class for handling seamless scene transitions and it's methods.
+// Authors: Lukas Pseja (xpsejal00), Vaclav Sovak (xsovakv00)
+
 package com.koteseni.ijaproj.controller;
 
 import java.io.IOException;

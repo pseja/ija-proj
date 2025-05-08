@@ -1,3 +1,6 @@
+// Class representing the state of a game and it's methods.
+// Authors: Lukas Pseja (xpsejal00), Vaclav Sovak (xsovakv00)
+
 package com.koteseni.ijaproj.model;
 
 import java.time.LocalDateTime;

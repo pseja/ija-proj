@@ -1,3 +1,6 @@
+// Class handling rendering the game board and it's methods.
+// Authors: Lukas Pseja (xpsejal00), Vaclav Sovak (xsovakv00)
+
 package com.koteseni.ijaproj.view;
 
 import java.io.InputStream;

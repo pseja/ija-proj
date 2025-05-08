@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Game view FXML file -->
+<!-- Authors: Lukas Pseja (xpsejal00), Vaclav Sovak (xsovakv00) -->
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>

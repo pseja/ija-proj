@@ -1,3 +1,6 @@
+// Main class which is the entry point for the game.
+// Authors: Lukas Pseja (xpsejal00), Vaclav Sovak (xsovakv00)
+
 package com.koteseni.ijaproj;
 
 import java.io.IOException;

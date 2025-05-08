@@ -1,3 +1,6 @@
+// Utility class for displaying dialog boxes
+// Authors: Lukas Pseja (xpsejal00), Vaclav Sovak (xsovakv00)
+
 package com.koteseni.ijaproj.controller;
 
 import javafx.scene.control.Alert;

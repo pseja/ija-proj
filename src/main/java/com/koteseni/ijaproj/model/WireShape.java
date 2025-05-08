@@ -1,3 +1,6 @@
+// Enum class of the possible wire shapes.
+// Authors: Lukas Pseja (xpsejal00), Vaclav Sovak (xsovakv00)
+
 package com.koteseni.ijaproj.model;
 
 import java.util.EnumSet;

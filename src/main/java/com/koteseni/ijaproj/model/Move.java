@@ -1,3 +1,6 @@
+// Class representing a single move made by the player in the game and it's methods.
+// Authors: Lukas Pseja (xpsejal00), Vaclav Sovak (xsovakv00)
+
 package com.koteseni.ijaproj.model;
 
 /**
