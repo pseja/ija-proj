@@ -514,10 +514,11 @@ public class GameController {
         if (game_logger != null) {
             try {
                 last_saved_game_path = game_logger.saveGame();
-                showInfoBox("Game Won!", "Moves: " + move_count + "\nTime: " + elapsed_seconds + "s\nSaved to: "
-                        + last_saved_game_path);
+                DialogUtils.showInfoBox("Game Won!",
+                        "Moves: " + move_count + "\nTime: " + elapsed_seconds + "s\nSaved to: "
+                                + last_saved_game_path);
             } catch (IOException e) {
-                showErrorBox("Failed to save completed game: " + e.getMessage());
+                DialogUtils.showErrorBox("Failed to save completed game: " + e.getMessage());
             }
         }
 
@@ -525,7 +526,7 @@ public class GameController {
             Stage stage = (Stage) board_grid.getScene().getWindow();
             SceneController.changeScene("Koteseni - Main Menu", "/com/koteseni/ijaproj/view/main-menu.fxml", stage);
         } catch (IOException e) {
-            showErrorBox("Error returning to main menu: " + e.getMessage());
+            DialogUtils.showErrorBox("Error returning to main menu: " + e.getMessage());
         }
     }
 
@@ -581,9 +582,9 @@ public class GameController {
     public void handleSaveButton() {
         try {
             last_saved_game_path = game_logger.saveGame();
-            showInfoBox("Saved to: " + last_saved_game_path);
+            DialogUtils.showInfoBox("Saved to: " + last_saved_game_path);
         } catch (IOException e) {
-            showErrorBox("Failed to save game: " + e.getMessage());
+            DialogUtils.showErrorBox("Failed to save game: " + e.getMessage());
         }
     }
 
@@ -618,10 +619,10 @@ public class GameController {
             if (result.get() == save_button) {
                 try {
                     last_saved_game_path = game_logger.saveGame();
-                    showInfoBox("Saved to: " + last_saved_game_path);
+                    DialogUtils.showInfoBox("Saved to: " + last_saved_game_path);
                     returnToMainMenu();
                 } catch (IOException e) {
-                    showErrorBox("Failed to save game: " + e.getMessage());
+                    DialogUtils.showErrorBox("Failed to save game: " + e.getMessage());
                 }
             } else if (result.get() == dont_save_button) {
                 returnToMainMenu();
@@ -644,7 +645,7 @@ public class GameController {
             SceneController.changeScene("Koteseni - Main Menu",
                     "/com/koteseni/ijaproj/view/main-menu.fxml", stage);
         } catch (IOException e) {
-            showErrorBox("Error returning to main menu: " + e.getMessage());
+            DialogUtils.showErrorBox("Error returning to main menu: " + e.getMessage());
         }
     }
 
@@ -681,45 +682,5 @@ public class GameController {
      */
     private void updateTimerLabel() {
         timer_label.setText("Time\n" + elapsed_seconds + "s");
-    }
-
-    /**
-     * Shows an information dialog with the specified message.
-     *
-     * @param message The message to display
-     */
-    private void showInfoBox(String message) {
-        Alert alert = new Alert(AlertType.INFORMATION);
-        alert.setTitle("Info");
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
-
-    /**
-     * Shows an information dialog with the specified header and message.
-     *
-     * @param header_message The header message
-     * @param message        The content message
-     */
-    private void showInfoBox(String header_message, String message) {
-        Alert alert = new Alert(AlertType.INFORMATION);
-        alert.setTitle("Info");
-        alert.setHeaderText(header_message);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
-
-    /**
-     * Shows an error dialog with the specified message.
-     *
-     * @param message The error message to display
-     */
-    private void showErrorBox(String message) {
-        Alert alert = new Alert(AlertType.ERROR);
-        alert.setTitle("Error");
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
     }
 }

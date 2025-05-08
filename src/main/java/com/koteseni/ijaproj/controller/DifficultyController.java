@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
@@ -96,7 +95,7 @@ public class DifficultyController {
             Stage stage = (Stage) back_button.getScene().getWindow();
             SceneController.changeScene("Koteseni - Main Menu", "/com/koteseni/ijaproj/view/main-menu.fxml", stage);
         } catch (IOException e) {
-            showErrorBox("Error returning to main menu: " + e.getMessage());
+            DialogUtils.showErrorBox("Error returning to main menu: " + e.getMessage());
         }
     }
 
@@ -118,20 +117,7 @@ public class DifficultyController {
             GameController controller = loader.getController();
             controller.startNewGame(difficulty);
         } catch (IOException e) {
-            showErrorBox("Error starting the game: " + e.getMessage());
+            DialogUtils.showErrorBox("Error starting the game: " + e.getMessage());
         }
-    }
-
-    /**
-     * Displays an error dialog with the specified message.
-     *
-     * @param message The error message to display
-     */
-    private void showErrorBox(String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error");
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
     }
 }

@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
@@ -48,7 +47,7 @@ public class MainMenuController {
             SceneController.changeScene("Koteseni - Difficulty Menu",
                     "/com/koteseni/ijaproj/view/difficulty-menu.fxml", stage);
         } catch (IOException e) {
-            showErrorBox("Error closing the main menu: " + e.getMessage());
+            DialogUtils.showErrorBox("Error closing the main menu: " + e.getMessage());
         }
     }
 
@@ -66,7 +65,7 @@ public class MainMenuController {
             SceneController.changeScene("Koteseni - Replay Game",
                     "/com/koteseni/ijaproj/view/replay-view.fxml", stage);
         } catch (IOException e) {
-            showErrorBox("Error loading replay view: " + e.getMessage());
+            DialogUtils.showErrorBox("Error loading replay view: " + e.getMessage());
         }
     }
 
@@ -80,22 +79,5 @@ public class MainMenuController {
     @FXML
     private void handleExitButton() {
         Platform.exit();
-    }
-
-    /**
-     * Displays an error dialog with the specified message.
-     * 
-     * <p>
-     * Shows error messages when scene switching fails.
-     * </p>
-     *
-     * @param message The error message to display
-     */
-    private void showErrorBox(String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error");
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
     }
 }

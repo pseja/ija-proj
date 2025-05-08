@@ -13,8 +13,6 @@ import com.koteseni.ijaproj.view.BoardView;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -114,7 +112,7 @@ public class ReplayController {
     private void handleReplaySelectedGameButton() {
         String selected = saved_games_list.getSelectionModel().getSelectedItem();
         if (selected == null) {
-            showErrorBox("Select a saved game to load first or browse for a save file.");
+            DialogUtils.showErrorBox("Select a saved game to load first or browse for a save file.");
             return;
         }
 
@@ -156,7 +154,7 @@ public class ReplayController {
             SceneController.changeScene("Koteseni - Main Menu",
                     "/com/koteseni/ijaproj/view/main-menu.fxml", stage);
         } catch (IOException e) {
-            showErrorBox("Error returning to main menu: " + e.getMessage());
+            DialogUtils.showErrorBox("Error returning to main menu: " + e.getMessage());
         }
     }
 
@@ -239,7 +237,7 @@ public class ReplayController {
             GameController controller = loader.getController();
             controller.takeOver(new_board, current_game_state.getDifficulty());
         } catch (IOException e) {
-            showErrorBox("Error starting game in play mode: " + e.getMessage());
+            DialogUtils.showErrorBox("Error starting game in play mode: " + e.getMessage());
         }
     }
 
@@ -273,7 +271,7 @@ public class ReplayController {
 
             updateMoveCounter();
         } catch (IOException e) {
-            showErrorBox("Failed to load game from file: " + e.getMessage());
+            DialogUtils.showErrorBox("Failed to load game from file: " + e.getMessage());
         }
     }
 
@@ -321,7 +319,7 @@ public class ReplayController {
                 saved_games_list.getItems().add(display_name);
             }
         } catch (IOException e) {
-            showErrorBox("Failed to load saved games list: " + e.getMessage());
+            DialogUtils.showErrorBox("Failed to load saved games list: " + e.getMessage());
         }
     }
 
@@ -341,18 +339,5 @@ public class ReplayController {
         int current_move = current_move_index + 1;
 
         move_counter_label.setText("Move " + current_move + "/" + total_moves);
-    }
-
-    /**
-     * Shows an error dialog with the specified message.
-     *
-     * @param message The error message to display
-     */
-    private void showErrorBox(String message) {
-        Alert alert = new Alert(AlertType.ERROR);
-        alert.setTitle("Error");
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
     }
 }
