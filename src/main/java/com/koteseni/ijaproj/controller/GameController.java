@@ -2,7 +2,6 @@ package com.koteseni.ijaproj.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
@@ -24,9 +23,6 @@ import com.koteseni.ijaproj.view.BoardView;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
@@ -36,32 +32,62 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+/**
+ * Controller for the game view.
+ * 
+ * @author ≽^•⩊•^≼ The Koteseni Team ≽^•⩊•^≼
+ */
 public class GameController {
 
+    /** The game board. */
     private Board board;
+
+    /** The board view rendering the game board. */
     private BoardView board_view;
 
+    /** Game logger for tracking moves and game state. */
     private GameLogger game_logger;
+
+    /** Path to the last save file. */
     private String last_saved_game_path;
 
+    /** Counter for the number of moves made by the player. */
     private long move_count;
 
+    /** Flag for displaying the hints overlay. */
     private boolean hints_enabled = false;
 
+    /** Timer for tracking game time. */
     private Timeline timer;
+
+    /** Number of seconds since the game started. */
     private int elapsed_seconds;
 
+    /** Random number generator for board randomization. */
     private final Random random = new Random();
 
+    /** GridPane where the game board is rendered. */
     @FXML
     private GridPane board_grid;
 
+    /** Label displaying the number of moves. */
     @FXML
     private Label move_counter_label;
 
+    /** Label displaying the time since the game started. */
     @FXML
     private Label timer_label;
 
+    /**
+     * Starts a new game with the specified difficulty level.
+     * 
+     * <p>
+     * Initializes the timer, move counter, board, logger, generates a random board
+     * and visualizes it.
+     * </p>
+     *
+     * @param difficulty The difficulty level
+     */
     public void startNewGame(int difficulty) {
         move_count = 0;
 
@@ -83,6 +109,14 @@ public class GameController {
         updateBoardView();
     }
 
+    /**
+     * Generates the game board.
+     * 
+     * <p>
+     * Uses a spanning tree algorithm to connect all tiles, randomizes the rotations
+     * and propagates power.
+     * </p>
+     */
     private void generateBoard() {
         int rows = board.getRows();
         int cols = board.getCols();
@@ -97,8 +131,6 @@ public class GameController {
 
         placeWires(tree_nodes);
 
-        // HACK: this is a hack to fix all the tiles being rotated by -180 degrees for
-        // some reason xdddd
         rotateAllTiles180Degrees();
 
         randomizeBoardRotations();
@@ -106,6 +138,20 @@ public class GameController {
         board.propagatePower();
     }
 
+    /**
+     * Generates a spanning tree for the game board.
+     * 
+     * <p>
+     * Creates a connected graph where every cell is reachable from the source cell.
+     * </p>
+     * 
+     * @param source_row Row position of the power source
+     * @param source_col Column position of the power source
+     * @param rows       Number of rows in the board
+     * @param cols       Number of columns in the board
+     * 
+     * @return Map of cell positions to Cell objects representing the spanning tree
+     */
     private Map<String, Cell> generateSpanningTree(int source_row, int source_col, int rows, int cols) {
         Map<String, Cell> cell_map = new HashMap<>();
         List<Cell> cells = new ArrayList<>();
@@ -151,6 +197,15 @@ public class GameController {
         return cell_map;
     }
 
+    /**
+     * Adds unvisited neighboring cells to the list of cells to visit.
+     *
+     * @param cell     The current cell
+     * @param cells    List of cells to add the neighbors to
+     * @param cell_map Map of cell positions to Cell objects
+     * @param rows     Number of rows in the board
+     * @param cols     Number of columns in the board
+     */
     private void addUnvisitedNeighborsToCells(Cell cell, List<Cell> cells, Map<String, Cell> cell_map, int rows,
             int cols) {
 
@@ -160,6 +215,16 @@ public class GameController {
         addNeighbor(cell.getRow(), cell.getCol() - 1, cells, cell_map, rows, cols); // West
     }
 
+    /**
+     * Adds a neighbor cell to the list of cells if it's in bounds.
+     * 
+     * @param row      Row position of the neighbor
+     * @param col      Column position of the neighbor
+     * @param cells    List of cells to add the neighbor to
+     * @param cell_map Map of cell positions to Cell objects
+     * @param rows     Total number of rows in the board
+     * @param cols     Total number of columns in the board
+     */
     private void addNeighbor(int row, int col, List<Cell> cells, Map<String, Cell> cell_map, int rows,
             int cols) {
 
@@ -177,6 +242,16 @@ public class GameController {
         cells.add(neighbor);
     }
 
+    /**
+     * Gets all visited neighbors of a cell.
+     * 
+     * @param cell     The current cell
+     * @param cell_map Map of cell positions to Cell objects
+     * @param rows     Number of rows in the board
+     * @param cols     Number of columns in the board
+     * 
+     * @return List of visited neighboring cells
+     */
     private List<Cell> getVisitedNeighbors(Cell cell, Map<String, Cell> cell_map, int rows, int cols) {
         List<Cell> neighbors = new ArrayList<>();
 
@@ -188,6 +263,16 @@ public class GameController {
         return neighbors;
     }
 
+    /**
+     * Adds a visited neighbor cell to the list of neighbors if in bounds.
+     * 
+     * @param row       Row position of the neighbor
+     * @param col       Column position of the neighbor
+     * @param neighbors List of visited neighbors
+     * @param cell_map  Map of cell positions to Cell objects
+     * @param rows      Total number of rows in the board
+     * @param cols      Total number of columns in the board
+     */
     private void addVisitedNeighbor(int row, int col, List<Cell> neighbors, Map<String, Cell> cell_map, int rows,
             int cols) {
 
@@ -203,6 +288,17 @@ public class GameController {
         }
     }
 
+    /**
+     * Gets all leaf cells in the spanning tree.
+     * 
+     * <p>
+     * Leaf cells have one connection which is perfect for light bulbs.
+     * </p>
+     *
+     * @param cell_map Map of cell positions to Cell objects
+     * 
+     * @return List of leaf cells
+     */
     private List<Cell> getLeafCells(Map<String, Cell> cell_map) {
         List<Cell> leaf_cells = new ArrayList<>();
 
@@ -215,9 +311,18 @@ public class GameController {
         return leaf_cells;
     }
 
+    /**
+     * Places light bulbs on the leaf cells.
+     * 
+     * <p>
+     * Light bulbs are placed on cells that have one connection orienting them to
+     * face that connection.
+     * </p>
+     * 
+     * @param cell_map Map of cell positions to Cell objects
+     */
     private void placeLightBulbs(Map<String, Cell> cell_map) {
         List<Cell> leaf_cells = getLeafCells(cell_map);
-        Collections.shuffle(leaf_cells);
 
         for (int i = 0; i < leaf_cells.size(); i++) {
             Cell cell = leaf_cells.get(i);
@@ -229,6 +334,11 @@ public class GameController {
         }
     }
 
+    /**
+     * Places wires on cells which are not light bulbs or the source.
+     * 
+     * @param cell_map Map of cell positions to Cell objects
+     */
     private void placeWires(Map<String, Cell> cell_map) {
         for (Cell cell : cell_map.values()) {
             int row = cell.getRow();
@@ -255,6 +365,15 @@ public class GameController {
         }
     }
 
+    /**
+     * Randomizes the rotations of tiles on the board.
+     * 
+     * <ol>
+     * <li>Sets the current rotation of each tile as its correct rotation</li>
+     * <li>Randomly rotates each tile</li>
+     * <li>Fail-safe rotating tiles so that not all light bulbs are powered</li>
+     * </ol>
+     */
     private void randomizeBoardRotations() {
         int rows = board.getRows();
         int cols = board.getCols();
@@ -287,6 +406,11 @@ public class GameController {
         }
     }
 
+    /**
+     * Randomly rotates a single tile.
+     * 
+     * @param tile The tile to rotate
+     */
     private void randomizeTileRotation(Tile tile) {
         if (tile == null) {
             return;
@@ -298,6 +422,14 @@ public class GameController {
         }
     }
 
+    /**
+     * Rotates all tiles on the board by 180 degrees.
+     * 
+     * <p>
+     * This is a workaround for an issue where tiles are initially
+     * rotated -180 degrees from their expected orientation.
+     * </p>
+     */
     private void rotateAllTiles180Degrees() {
         int rows = board.getRows();
         int cols = board.getCols();
@@ -312,6 +444,9 @@ public class GameController {
         }
     }
 
+    /**
+     * Updates the board view to show the current state of the board.
+     */
     private void updateBoardView() {
         if (board_view == null) {
             return;
@@ -320,6 +455,19 @@ public class GameController {
         board_view.updateView();
     }
 
+    /**
+     * Handles clicking on tiles.
+     * 
+     * <ol>
+     * <li>Rotates the clicked tile</li>
+     * <li>Updates the move counter and label</li>
+     * <li>Logs the move</li>
+     * <li>Checks the win condition</li>
+     * </ol>
+     *
+     * @param row Row position of the clicked tile
+     * @param col Column position of the clicked tile
+     */
     public void handleTileClick(int row, int col) {
         if (board == null) {
             return;
@@ -347,6 +495,16 @@ public class GameController {
         }
     }
 
+    /**
+     * Handles the win when all light bulbs are powered.
+     * 
+     * <ol>
+     * <li>Stops the timer</li>
+     * <li>Automatically saves the completed game</li>
+     * <li>Shows a win message</li>
+     * <li>Returns to the main menu using the SceneController</li>
+     * </ol>
+     */
     private void handleWin() {
         if (timer != null) {
             timer.stop();
@@ -364,21 +522,19 @@ public class GameController {
         }
 
         try {
-            FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/com/koteseni/ijaproj/view/main-menu.fxml"));
-            Parent root = loader.load();
-
-            Stage stage = new Stage();
-            stage.setTitle("Koteseni - Main Menu");
-            stage.setScene(new Scene(root));
-            stage.show();
-
-            ((Stage) board_grid.getScene().getWindow()).close();
+            Stage stage = (Stage) board_grid.getScene().getWindow();
+            SceneController.changeScene("Koteseni - Main Menu", "/com/koteseni/ijaproj/view/main-menu.fxml", stage);
         } catch (IOException e) {
             showErrorBox("Error returning to main menu: " + e.getMessage());
         }
     }
 
+    /**
+     * Takes over a game that is being replayed.
+     * 
+     * @param board      The board state to take over
+     * @param difficulty The difficulty level of the game
+     */
     public void takeOver(Board board, int difficulty) {
         this.board = board;
         move_count = 0;
@@ -392,16 +548,35 @@ public class GameController {
         updateBoardView();
     }
 
+    /**
+     * Handles clicking on the "Hints" button.
+     * 
+     * <p>
+     * Toggles the hint overlay.
+     * </p>
+     */
     @FXML
     public void handleHintsButton() {
         hints_enabled = !hints_enabled;
         updateBoardView();
     }
 
+    /**
+     * Checks if the hint overlay is enabled.
+     *
+     * @return true if hints are enabled, false otherwise
+     */
     public boolean areHintsEnabled() {
         return hints_enabled;
     }
 
+    /**
+     * Handles clicking on the "Save" button.
+     * 
+     * <p>
+     * Saves the current game state to a file.
+     * </p>
+     */
     @FXML
     public void handleSaveButton() {
         try {
@@ -412,6 +587,14 @@ public class GameController {
         }
     }
 
+    /**
+     * Handles clicking on the "Back" button.
+     * 
+     * <p>
+     * Prompts the user if he wants to save the game before returning to the main
+     * menu using the SceneController.
+     * </p>
+     */
     @FXML
     public void handleBackButton() {
         if (timer != null) {
@@ -448,6 +631,13 @@ public class GameController {
         }
     }
 
+    /**
+     * Returns to the main menu.
+     * 
+     * <p>
+     * Switches the scene using the SceneController.
+     * </p>
+     */
     private void returnToMainMenu() {
         try {
             Stage stage = (Stage) board_grid.getScene().getWindow();
@@ -458,6 +648,13 @@ public class GameController {
         }
     }
 
+    /**
+     * Initializes the game timer.
+     * 
+     * <p>
+     * Sets up a Timeline that updates the timer label every second.
+     * </p>
+     */
     private void initializeTimer() {
         elapsed_seconds = 0;
         if (timer != null) {
@@ -472,14 +669,25 @@ public class GameController {
         timer.play();
     }
 
+    /**
+     * Updates the move counter label.
+     */
     private void updateMoveCounterLabel() {
         move_counter_label.setText("Moves\n" + move_count);
     }
 
+    /**
+     * Updates the timer label.
+     */
     private void updateTimerLabel() {
         timer_label.setText("Time\n" + elapsed_seconds + "s");
     }
 
+    /**
+     * Shows an information dialog with the specified message.
+     *
+     * @param message The message to display
+     */
     private void showInfoBox(String message) {
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Info");
@@ -488,6 +696,12 @@ public class GameController {
         alert.showAndWait();
     }
 
+    /**
+     * Shows an information dialog with the specified header and message.
+     *
+     * @param header_message The header message
+     * @param message        The content message
+     */
     private void showInfoBox(String header_message, String message) {
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Info");
@@ -496,6 +710,11 @@ public class GameController {
         alert.showAndWait();
     }
 
+    /**
+     * Shows an error dialog with the specified message.
+     *
+     * @param message The error message to display
+     */
     private void showErrorBox(String message) {
         Alert alert = new Alert(AlertType.ERROR);
         alert.setTitle("Error");
