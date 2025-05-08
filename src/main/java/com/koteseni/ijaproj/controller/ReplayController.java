@@ -22,45 +22,76 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+/**
+ * Controller for the replay mode of the game.
+ * 
+ * @author ≽^•⩊•^≼ The Koteseni Team ≽^•⩊•^≼
+ */
 public class ReplayController {
 
+    /** List view displaying saved games in the data/saves directory. */
     @FXML
     private ListView<String> saved_games_list;
 
+    /** Button to replay the selected game from the list view. */
     @FXML
     private Button replay_selected_game_button;
 
+    /** Button to browse for save files outside of the data/saves directory. */
     @FXML
     private Button browse_button;
 
+    /** Button to return to the main menu. */
     @FXML
     private Button back_button;
 
+    /** Grid pane for the game board. */
     @FXML
     private GridPane board_grid;
 
+    /** Button to step back in the replay. */
     @FXML
     private Button step_back_button;
 
+    /** Button to take over the game from the current move. */
     @FXML
     private Button take_over_button;
 
+    /** Button to step forward in the replay. */
     @FXML
     private Button step_forward_button;
 
+    /** Label showing the current move number. */
     @FXML
     private Label move_counter_label;
 
+    /** Label showing the name of the currently loaded save file. */
     @FXML
     private Label save_name_label;
 
+    /** Date time formatter for displaying dates like "yyyy-MM-dd HH:mm:ss". */
     private final DateTimeFormatter date_formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
+    /** The replay board. */
     private Board board;
+
+    /** Board view for rendering the board. */
     private BoardView board_view;
+
+    /** Game state of the loaded save file. */
     private GameState current_game_state;
+
+    /** Index of the current move. */
     private int current_move_index = -1;
 
+    /**
+     * Initializes the replay controller.
+     * 
+     * <p>
+     * Sets the buttons to disabled, clears the move counter and the save name
+     * labels and refreshes the list of saved games.
+     * </p>
+     */
     public void initialize() {
         step_back_button.setDisable(true);
         step_forward_button.setDisable(true);
@@ -71,6 +102,14 @@ public class ReplayController {
         refreshSavedGamesList();
     }
 
+    /**
+     * Handles clicking the "Replay selected game" button.
+     * 
+     * <p>
+     * Loads and displays the selected game and if no game is selected, shows an
+     * error message.
+     * </p>
+     */
     @FXML
     private void handleReplaySelectedGameButton() {
         String selected = saved_games_list.getSelectionModel().getSelectedItem();
@@ -82,6 +121,14 @@ public class ReplayController {
         loadGameFromFile("data/saves/" + selected.replace(' ', '_').replace(':', '-') + ".json");
     }
 
+    /**
+     * Handles clicking the "Browse" button.
+     * 
+     * <p>
+     * Opens a file chooser to select a save file from the users computer and when
+     * selecting a file loads and diplays it.
+     * </p>
+     */
     @FXML
     private void handleBrowseButton() {
         FileChooser file_chooser = new FileChooser();
@@ -95,6 +142,13 @@ public class ReplayController {
         }
     }
 
+    /**
+     * Handles clicking the "Back" button.
+     * 
+     * <p>
+     * Returns to the main menu by changing the scene using the SceneController.
+     * </p>
+     */
     @FXML
     private void handleBackButton() {
         try {
@@ -106,6 +160,13 @@ public class ReplayController {
         }
     }
 
+    /**
+     * Handles clicking the "<" button.
+     * 
+     * <p>
+     * Moves the replay one step back. The button is disabled on the 0th move.
+     * </p>
+     */
     @FXML
     private void handleStepBackButton() {
         if (current_game_state == null) {
@@ -124,6 +185,13 @@ public class ReplayController {
         }
     }
 
+    /**
+     * Handles clicking the ">" button.
+     * 
+     * <p>
+     * Moves the replay one step forward. The button is disabled on the last move.
+     * </p>
+     */
     @FXML
     private void handleStepForwardButton() {
         if (current_game_state == null) {
@@ -144,6 +212,14 @@ public class ReplayController {
         }
     }
 
+    /**
+     * Handles clicking the "Take over" button.
+     * 
+     * <p>
+     * Switches from replay mode to play mode using the SceneController starting
+     * the game from the current move.
+     * </p>
+     */
     @FXML
     private void handleTakeOverButton() {
         if (current_game_state == null) {
@@ -167,6 +243,18 @@ public class ReplayController {
         }
     }
 
+    /**
+     * Loads a game from a save file.
+     * 
+     * <ol>
+     * <li>Parses the save file</li>
+     * <li>Creates the initial board</li>
+     * <li>Displays the board</li>
+     * <li>Enables step forward and take over buttons</li>
+     * </ol>
+     *
+     * @param file_path Path to the save file
+     */
     private void loadGameFromFile(String file_path) {
         try {
             current_move_index = -1;
@@ -189,6 +277,17 @@ public class ReplayController {
         }
     }
 
+    /**
+     * Replays the saved game up to the specified move index.
+     * 
+     * <ol>
+     * <li>Resets the board to the initial state</li>
+     * <li>Applies all moves up to the specified move index</li>
+     * <li>Updates the board view</li>
+     * </ol>
+     *
+     * @param move_index Index of the last move to apply
+     */
     private void replayMovesUpTo(int move_index) {
         board = current_game_state.createInitialBoard();
 
@@ -202,6 +301,15 @@ public class ReplayController {
         board_view.updateView();
     }
 
+    /**
+     * Refreshes the list of saved games.
+     * 
+     * <ol>
+     * <li>Gets all save files from the data/saves</li>
+     * <li>Loads the date from each file as a display name</li>
+     * <li>Shows the games in the list view</li>
+     * </ol>
+     */
     private void refreshSavedGamesList() {
         try {
             List<Path> saved_games = GameLogger.getSavedGames();
@@ -217,6 +325,13 @@ public class ReplayController {
         }
     }
 
+    /**
+     * Updates the move counter label.
+     * 
+     * <p>
+     * Shows the current move index and the total number of moves.
+     * </p>
+     */
     private void updateMoveCounter() {
         if (current_game_state == null) {
             return;
@@ -228,6 +343,11 @@ public class ReplayController {
         move_counter_label.setText("Move " + current_move + "/" + total_moves);
     }
 
+    /**
+     * Shows an error dialog with the specified message.
+     *
+     * @param message The error message to display
+     */
     private void showErrorBox(String message) {
         Alert alert = new Alert(AlertType.ERROR);
         alert.setTitle("Error");
