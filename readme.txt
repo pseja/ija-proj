@@ -4,6 +4,9 @@ Author: Lukáš Pšeja (xpsejal00)
 
 Author: Václav Sovák (xsovakv00)
 
+## Final evaluation
+(100/100)
+
 ## Setup
 ### Requirements
 This project uses Maven and JavaFX, these can be downloaded on Ubuntu
